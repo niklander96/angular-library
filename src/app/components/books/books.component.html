@@ -1,0 +1,10 @@
+<div class="bookList">
+    <h2>Список книг</h2>
+    <button class="addButton" (click)="addBook()">Добавить новую книгу</button>
+</div>
+<ul>
+    <div *ngFor="let book of books; index as i; track: $index">
+        <app-book [book]="book"></app-book>  
+    </div>
+</ul>
+<router-outlet></router-outlet>

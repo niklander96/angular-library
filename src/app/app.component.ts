@@ -1,10 +1,19 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  templateUrl: './app.component.html'
 })
 export class AppComponent {
-  title = 'angular-library';
+  constructor(private http: HttpClient) {
+  }
+
+  login() {
+    this.http.post('/auth/login', { username: 'admin', password: 'admin' })
+      .subscribe((res) => {
+        console.log(res); // { token: 'fake-jwt-token' }
+      });
+  }
 }
