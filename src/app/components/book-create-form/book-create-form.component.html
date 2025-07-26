@@ -1,0 +1,28 @@
+<div>
+    <button class="returnButton" (click)="returnToList()">Назад к списку</button>
+    <form class="createForm">
+        <p>
+            <label>Название книги</label><br>
+            <input name="name" type="text">
+        </p>
+        <p>
+            <label>Автор</label><br>
+            <input name="author" type="text">
+        </p>
+        <p>
+            <label>Дата выпуска</label><br>
+            <input name="releaseDate" type="date">
+        </p>
+        <p>
+            <label>Статус книги</label><br>
+            <select name="bookStatus" id="" >
+                <option value="" *ngFor="let status of bookStatuses; track: $index">
+                    {{ status | bookStatus}}
+                </option>
+            </select>
+        </p>
+    </form>
+    <button class="returnButton" (click)="saveBook()">Сохранить</button>
+</div>
+
+

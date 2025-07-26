@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FakeBackendInterceptor } from './services/fake-backend.service';
 import { CommonModule } from '@angular/common';
@@ -13,6 +13,7 @@ import { BooksService } from './services/books.service';
 import { BookStatusPipe } from './pipes/book-status.pipe';
 import { HomeComponent } from './components/home/home.component';
 import { RouterLink } from '@angular/router';
+import { BookCreateFormComponent } from './components/book-create-form/book-create-form.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { RouterLink } from '@angular/router';
     BookComponent,
     BookStatusPipe,
     HomeComponent,
+    BookCreateFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -28,7 +30,8 @@ import { RouterLink } from '@angular/router';
     ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
-    RouterLink
+    RouterLink,
+    FormsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: FakeBackendInterceptor, multi: true }, BooksService,

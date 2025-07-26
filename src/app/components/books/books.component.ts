@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { EBookStatuses } from 'src/app/enum/book-statuses.enum';
 import { Book } from 'src/app/helpers';
 import { BooksService } from 'src/app/services/books.service';
@@ -10,12 +11,17 @@ import { BooksService } from 'src/app/services/books.service';
 })
 export class BooksComponent implements OnInit {
   books: Book[] = []
+  isBooksShow: boolean = true
 
-  constructor(private bookService: BooksService) {}
+  constructor(
+    private bookService: BooksService,
+    private router: Router
+  ) {}
 
-  public addBook(): void {
-    console.log('Кинга добавлена')
-    this.bookService.addBook(new Book(0, '', '', '', EBookStatuses.DAMAGED))
+  addBook(): void {
+    this.router.navigate(['/books/create'])
+    this.isBooksShow = false
+    // this.bookService.addBook(new Book(0, '', '', '', EBookStatuses.DAMAGED))
   }
 
   getBooks() {
