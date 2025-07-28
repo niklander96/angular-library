@@ -8,24 +8,28 @@ import {
 } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
-import { User } from '../helpers/user';
-import { Book } from '../helpers';
-import { books } from '../../app/mock/books'
+import { User } from '../models/user';
+import { Book } from '../models';
+import { BookService } from './book.service';
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
-  
+  books: Book[] = []
 
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
+    console.log('request')
+
+    const books = this.books
 
     let lastId = books.length > 0 ? Math.max(...books.map(b => b.id)) : 0;
-    
-    
-    const { url, method, body } = request;
 
+    
+    
+    const { url, method, headers, body } = request;
+    console.log('url', url)
     // Имитируем задержку API
     return of(null)
       .pipe(mergeMap(handleRoute))
@@ -44,6 +48,9 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         case url.endsWith('/books/create') && method === 'POST':
           return addBook();
+
+        case url.endsWith('/books/search') && method === 'POST':
+          return searchBooks(';');
 
         case url.endsWith('/books/delete') && method === 'DELETE':
           return deleteBook();
@@ -71,22 +78,32 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       return ok(books);
     }
 
+    function searchBooks(searchValue: string): Observable<HttpResponse<Book[]>> {
+      const books = getBooksFromStorage();
+      return ok(books.filter((book) => {
+        return book.name === searchValue
+      }));
+    }
+
     function addBook(): Observable<HttpResponse<Book>> {
       const books = getBooksFromStorage();
-      const newBook = { id: generateNewId(), ...body, bookStatus: 'NOT_IN_USE' };
+      console.log('body', body)
+      const newBook = { id: generateNewId(), ...body };
       books.push(newBook);
       saveBooksToStorage(books);
       return ok(newBook);
     }
 
-    function deleteBook(): Observable<HttpResponse<void>> {
+    function deleteBook(): Observable<HttpResponse<Book[]>> {
       let books = getBooksFromStorage();
+
       const index = books.findIndex(b => b.id === body.id);
       if (index === -1) return error('Книга не найдена');
   
       books = books.filter(b => b.id !== body.id);
+      console.log('books', books)
       saveBooksToStorage(books);
-      return ok();
+      return ok(books);
     }
 
     function authenticate() {
@@ -120,6 +137,25 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function error(message: string) {
       return throwError(() => ({ error: { message } }));
+    }
+
+    function unauthorized() {
+            return throwError(() => ({ status: 401, error: { message: 'Unauthorized' } }))
+                .pipe(materialize(), delay(500), dematerialize());
+    }
+
+    function basicDetails(user: any) {
+            const { id, username, firstName, lastName } = user;
+            return { id, username, firstName, lastName };
+    }
+
+    function isLoggedIn() {
+            return headers.get('Authorization') === 'Bearer fake-jwt-token';
+    }
+
+    function idFromUrl() {
+            const urlParts = url.split('/');
+            return parseInt(urlParts[urlParts.length - 1]);
     }
   }
 }

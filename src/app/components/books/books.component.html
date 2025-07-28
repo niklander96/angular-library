@@ -3,7 +3,7 @@
     <button class="addButton" (click)="addBook()">Добавить новую книгу</button>
 </div>
 <ul *ngIf="isBooksShow">
-    <div *ngFor="let book of books; index as i; track: $index">
+    <div *ngFor="let book of books; index as i;">
         <app-book [book]="book"></app-book>  
     </div>
 </ul>

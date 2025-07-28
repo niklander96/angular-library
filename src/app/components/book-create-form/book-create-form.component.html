@@ -1,28 +1,30 @@
-<div>
-    <button class="returnButton" (click)="returnToList()">Назад к списку</button>
-    <form class="createForm">
-        <p>
+    <form [formGroup]="myForm" class="createForm" (ngSubmit)="submit()">
+        <div>
             <label>Название книги</label><br>
-            <input name="name" type="text">
-        </p>
-        <p>
+            <input name="name" type="text" formControlName="name">
+        </div>
+        <div>
             <label>Автор</label><br>
-            <input name="author" type="text">
-        </p>
-        <p>
+            <input name="author" type="text" formControlName="author">
+        </div>
+        <div>
             <label>Дата выпуска</label><br>
-            <input name="releaseDate" type="date">
-        </p>
-        <p>
+            <input name="releaseDate" type="date" formControlName="releaseDate">
+        </div>
+        <div>
             <label>Статус книги</label><br>
-            <select name="bookStatus" id="" >
-                <option value="" *ngFor="let status of bookStatuses; track: $index">
+            <select name="bookStatus" formControlName="bookStatus" >
+                <option [value]="status" *ngFor="let status of bookStatuses">
                     {{ status | bookStatus}}
                 </option>
             </select>
-        </p>
+        </div>
+        <div class="buttonGroup">
+            <button class="button" (click)="returnToList()">Назад к списку</button>
+            <button class="button">Сохранить</button>
+        </div>
     </form>
-    <button class="returnButton" (click)="saveBook()">Сохранить</button>
-</div>
+    
+
 
 

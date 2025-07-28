@@ -9,7 +9,7 @@ import { FakeBackendInterceptor } from './services/fake-backend.service';
 import { CommonModule } from '@angular/common';
 import { BooksComponent } from './components/books/books.component';
 import { BookComponent } from './components/book/book.component';
-import { BooksService } from './services/books.service';
+import { BookService } from './services/book.service';
 import { BookStatusPipe } from './pipes/book-status.pipe';
 import { HomeComponent } from './components/home/home.component';
 import { RouterLink } from '@angular/router';
@@ -31,10 +31,11 @@ import { BookCreateFormComponent } from './components/book-create-form/book-crea
     HttpClientModule,
     AppRoutingModule,
     RouterLink,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: FakeBackendInterceptor, multi: true }, BooksService,
+    { provide: HTTP_INTERCEPTORS, useClass: FakeBackendInterceptor, multi: true }, BookService,
   ],
   bootstrap: [AppComponent]
 })

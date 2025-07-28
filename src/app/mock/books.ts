@@ -1,5 +1,5 @@
 import { EBookStatuses } from "../enum/book-statuses.enum";
-import { Book } from "../helpers";
+import { Book } from "../models";
 
 export const books: Book[] =  [
     {

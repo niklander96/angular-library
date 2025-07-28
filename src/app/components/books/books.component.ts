@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { EBookStatuses } from 'src/app/enum/book-statuses.enum';
-import { Book } from 'src/app/helpers';
-import { BooksService } from 'src/app/services/books.service';
+import { Book } from 'src/app/models';
+import { BookService } from 'src/app/services/book.service';
 
 @Component({
   selector: 'app-books',
@@ -10,23 +9,25 @@ import { BooksService } from 'src/app/services/books.service';
   styleUrls: ['./books.component.css'],
 })
 export class BooksComponent implements OnInit {
-  books: Book[] = []
+  books: Book[] = this.bookService.books
+
   isBooksShow: boolean = true
 
   constructor(
-    private bookService: BooksService,
+    private bookService: BookService,
     private router: Router
   ) {}
 
   addBook(): void {
     this.router.navigate(['/books/create'])
     this.isBooksShow = false
-    // this.bookService.addBook(new Book(0, '', '', '', EBookStatuses.DAMAGED))
   }
 
   getBooks() {
     this.bookService.getBooks().subscribe(books => {
+      console.log('books', books)
       this.books = books
+      this.bookService.books = books
     })
   }
  
