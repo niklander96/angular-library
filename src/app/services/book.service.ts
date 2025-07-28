@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Book } from '../models';
-import { map, Observable } from 'rxjs';
+import { delay, map, Observable } from 'rxjs';
 
 interface IBookService {
   books: Book[]
@@ -24,7 +24,7 @@ export class BookService implements IBookService {
         return (books as Book[]).map((book) => {
           return new Book(book.id, book.name, book.author, book.releaseDate, book.bookStatus)
         })
-    }));
+    }), delay(3000));
   }
 
   /**
@@ -33,7 +33,7 @@ export class BookService implements IBookService {
    * @returns 
    */
   addBook(newBook: Book): Observable<Book> {
-    return this.http.post('/books/create', newBook) as Observable<Book>
+    return (this.http.post('/books/create', newBook) as Observable<Book>).pipe(delay(3000))
   }
 
   /**
@@ -42,6 +42,6 @@ export class BookService implements IBookService {
    * @returns 
    */
   deleteBook(bookId: number): Observable<unknown> {
-    return this.http.delete('/books/delete', { body: { id: bookId }})
+    return this.http.delete('/books/delete', { body: { id: bookId }}).pipe(delay(3000))
   }
 }
