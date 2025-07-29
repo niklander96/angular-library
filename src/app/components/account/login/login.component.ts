@@ -42,8 +42,10 @@ export class LoginComponent {
       return;
     }
 
+    console.log('this.formValue', this.formValue)
+
     this.loading = true;
-    this.accountService.login(this.formValue.username.value, this.formValue.password.value)
+    this.accountService.login(this.formValue.username, this.formValue.password)
       .pipe(first())
       .subscribe({
         next: () => {

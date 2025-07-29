@@ -2,9 +2,15 @@
    <div class="card-body">
      <div class="d-flex justify-content-between align-items-start">
        <h5 class="card-title">{{ book?.name }}</h5>
-       <button class="btn btn-outline-danger btn-sm" (click)="deleteBook?.(book?.id)">
-         <i class="bi bi-trash"></i> Удалить
-       </button>
+       <div>
+         <button class="btn btn-outline-danger btn-sm" (click)="turnToEdit(book?.id)">
+           <i class="bi bi-trash"></i> Редактировать
+         </button>
+         <button class="btn btn-outline-danger btn-sm" (click)="deleteBook?.(book?.id)">
+           <i class="bi bi-trash"></i> Удалить
+         </button>
+       </div>
+
      </div>
      <h6 class="card-subtitle text-muted mb-2">Автор: {{ book?.author }}</h6>
      <p class="card-text mb-1"><strong>Год выпуска:</strong> {{ book?.releaseDate}}</p>

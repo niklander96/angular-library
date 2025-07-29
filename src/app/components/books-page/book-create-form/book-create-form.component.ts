@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { EBookStatuses } from 'src/app/enum/book-statuses.enum';
 import { Book } from 'src/app/models';
 import { BookService } from 'src/app/services/book.service';
-import { BookStatusPipe } from "../../pipes/book-status.pipe";
+import { BookStatusPipe } from "../../../pipes/book-status.pipe";
 import { CommonModule } from "@angular/common";
 
 /**
@@ -30,7 +30,7 @@ export class BookCreateFormComponent implements IBookCreateFormComponent, OnInit
   /**
    * Объект формы создания книги.
    */
-  public createBookForm: FormGroup;
+  public createBookForm!: FormGroup;
 
   /**
    * Массив статусов книг.
@@ -43,14 +43,7 @@ export class BookCreateFormComponent implements IBookCreateFormComponent, OnInit
   constructor(
     private router: Router,
     private bookService: BookService
-) {
-    this.createBookForm = new FormGroup({
-      "name": new FormControl('', Validators.required),
-      "author": new FormControl('', Validators.required),
-      "releaseDate": new FormControl('', Validators.required),
-      "bookStatus": new FormControl('notInUse')
-    })
-  }
+) {}
 
   /**
    * Возвращает к списку книг.
@@ -90,6 +83,13 @@ export class BookCreateFormComponent implements IBookCreateFormComponent, OnInit
   ngOnInit(): void {
     this.bookStatuses = Object.values(EBookStatuses).map((status) => {
       return status.toString()
+    })
+
+    this.createBookForm = new FormGroup({
+      "name": new FormControl('', Validators.required),
+      "author": new FormControl('', Validators.required),
+      "releaseDate": new FormControl('', Validators.required),
+      "bookStatus": new FormControl('notInUse')
     })
   }
 }

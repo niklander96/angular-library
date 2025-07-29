@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Book } from 'src/app/models';
-import { BookStatusPipe } from "../../pipes/book-status.pipe";
+import { BookStatusPipe } from "../../../pipes/book-status.pipe";
+import {Router} from "@angular/router";
 
 /**
  * Интерфейс компонента книги.
@@ -26,4 +27,11 @@ export class BookComponent implements IBookComponent{
   @Input() public book?: Book
 
   @Input() public deleteBook?: (bookId?: number) => void
+
+  constructor(private router: Router) {
+  }
+
+  turnToEdit(bookId?: number) {
+    this.router.navigate([`/books/edit/${bookId}`])
+  }
 }

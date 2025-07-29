@@ -1,18 +1,20 @@
 import {Routes} from "@angular/router";
-import {BooksComponent} from "./components/books/books.component";
-import {BookCreateFormComponent} from "./components/book-create-form/book-create-form.component";
+import {BooksComponent} from "./components/books-page/books/books.component";
+import {BookCreateFormComponent} from "./components/books-page/book-create-form/book-create-form.component";
 import {HomeComponent} from "./components/home/home.component";
 import {AuthGuard} from "./helpers";
 import {UsersComponent} from "./components/users/users.component";
 import {LayoutComponent, LoginComponent, RegisterComponent} from "./components/account";
+import {BooksLayoutComponent} from "./components/books-page/books-layout/books-layout.component";
+import {AddEditBookComponent} from "./components/books-page/add-edit-book/add-edit-book.component";
 
 export const routes: Routes = [
-  { path: 'books', component: BooksComponent,
+  { path: 'books', component: BooksLayoutComponent,
   children: [
-    { path: 'create', component: BookCreateFormComponent },
-    { path: 'edit', component: BookCreateFormComponent }
+    { path: '', component: BooksComponent },
+    { path: 'create', component: AddEditBookComponent },
+    { path: 'edit/:id', component: AddEditBookComponent }
   ]},
-  { path: 'books/create', component: BookCreateFormComponent },
   { path: 'users', component: UsersComponent,},
   { path: 'account',
     component: LayoutComponent,
@@ -21,9 +23,7 @@ export const routes: Routes = [
       { path: 'register', component: RegisterComponent }
     ]
   },
-  { path: '', component: HomeComponent,
-    // canActivate: [AuthGuard]
-  },
+  { path: '', component: HomeComponent },
 
 
   // otherwise redirect to home

@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
 import { Book } from 'src/app/models';
 import { BookService } from 'src/app/services/book.service';
 import { BookComponent } from "../book/book.component";
 import { CommonModule } from "@angular/common";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'tsc-books',
   standalone: true,
-  imports: [RouterModule, BookComponent, CommonModule],
+  imports: [BookComponent, CommonModule, RouterLink],
   templateUrl: './books.component.html',
 })
 export class BooksComponent implements OnInit {
@@ -16,16 +16,7 @@ export class BooksComponent implements OnInit {
 
   constructor(
     private bookService: BookService,
-    private router: Router
   ) {}
-
-  /**
-   * Переходит на страницу создания книги.
-   * @returns {void}
-   */
-  turnToCreateBook(): void {
-    void this.router.navigate(['/books/create'])
-  }
 
   /**
    * Возвращает список книг.
