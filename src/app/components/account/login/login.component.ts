@@ -7,7 +7,7 @@ import { AccountService } from '../../../services';
 import { CommonModule } from "@angular/common";
 
 @Component({
-  selector: 'tsc-account',
+  selector: 'tsc-login',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, RouterLink],
   templateUrl: 'login.component.html'

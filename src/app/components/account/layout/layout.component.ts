@@ -3,7 +3,7 @@ import {Router, RouterOutlet} from "@angular/router";
 import {AccountService} from "../../../services";
 
 @Component({
-  selector: 'app-layout',
+  selector: 'tsc-layout',
   standalone: true,
   imports: [
     RouterOutlet

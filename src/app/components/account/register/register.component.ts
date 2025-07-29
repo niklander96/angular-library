@@ -6,7 +6,7 @@ import { first } from "rxjs/operators";
 import { CommonModule } from "@angular/common";
 
 @Component({
-  selector: 'app-register',
+  selector: 'tsc-register',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, RouterLink],
   templateUrl: './register.component.html',
