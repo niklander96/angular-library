@@ -3,6 +3,9 @@ import { Injectable } from '@angular/core';
 import { Book } from '../models';
 import { delay, map, Observable } from 'rxjs';
 
+/**
+ * Интерфейс сервера для работы с книгами.
+ */
 interface IBookService {
   books: Book[]
   getBooks() :Observable<Book[]>
@@ -10,14 +13,19 @@ interface IBookService {
   deleteBook(bookId: number): Observable<unknown>
 }
 
-@Injectable()
+/**
+ * Сервис для работы с книгами.
+ */
+@Injectable({
+  providedIn: 'root'
+})
 export class BookService implements IBookService {
   books: Book[] = []
   constructor(private http: HttpClient) { }
 
   /**
-   * 
-   * @returns
+   * Возвращает книги.
+   * @returns {Observable<Book[]>}
    */
   getBooks(): Observable<Book[]> {
     return this.http.get('/books').pipe(map((books) => {
@@ -28,20 +36,20 @@ export class BookService implements IBookService {
   }
 
   /**
-   * 
-   * @param newBook 
-   * @returns 
+   * Добавляет книгу.
+   * @param {Book} newBook - Объект новой книги.
+   * @returns {Observable<Book>}
    */
   addBook(newBook: Book): Observable<Book> {
     return (this.http.post('/books/create', newBook) as Observable<Book>).pipe(delay(3000))
   }
 
   /**
-   * 
-   * @param bookId 
-   * @returns 
+   * Удаляет книгу.
+   * @param {number | null} bookId - Уникальный идентификатор книги.
+   * @returns {Observable<Book[]>}
    */
-  deleteBook(bookId: number): Observable<unknown> {
-    return this.http.delete('/books/delete', { body: { id: bookId }}).pipe(delay(3000))
+  deleteBook(bookId: number | null): Observable<Book[]> {
+    return (this.http.delete('/books/delete', { body: { id: bookId }}) as Observable<Book[]>).pipe(delay(3000))
   }
 }

@@ -1,10 +1,13 @@
-<div class="bookList">
-    <h2>Список книг</h2>
-    <button class="addButton" (click)="addBook()">Добавить новую книгу</button>
+<div class="d-flex justify-content-between align-items-center m-4">
+  <h2 class="h4 mb-0">📚 Список книг</h2>
+  <button class="btn btn-primary" (click)="turnToCreateBook()">
+    <i class="bi bi-plus-circle"></i> Добавить новую книгу
+  </button>
 </div>
-<ul *ngIf="isBooksShow">
-    <div *ngFor="let book of books; index as i;">
-        <app-book [book]="book"></app-book>  
-    </div>
-</ul>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 m-4">
+  <div class="col" *ngFor="let book of books; index as i">
+    <tsc-book [book]="book" [deleteBook]="deleteBook"></tsc-book>
+  </div>
+</div>
 <router-outlet></router-outlet>

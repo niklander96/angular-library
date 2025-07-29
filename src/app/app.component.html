@@ -1,3 +1,15 @@
 
-<h1>Библиотека</h1>
-<app-home></app-home>
+
+<nav class="navbar navbar-expand navbar-dark bg-dark px-3">
+  <div class="navbar-nav">
+    <a class="nav-item nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Главная</a>
+    <a class="nav-item nav-link" routerLink="/users" routerLinkActive="active">Клиенты</a>
+    <a class="nav-item nav-link" routerLink="/books" routerLinkActive="active">Книги</a>
+    <button class="btn btn-link nav-item nav-link" (click)="logout()">Выйти</button>
+  </div>
+</nav>
+
+<div class="app-container" [ngClass]="{ 'bg-light': user }">
+  <router-outlet></router-outlet>
+</div>
+

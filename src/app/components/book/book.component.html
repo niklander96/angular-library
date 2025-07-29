@@ -1,9 +1,13 @@
- <li >
-    <div>
-        <h3>{{book?.name}}</h3>
-        <button (click)="deleteBook()">Удалить</button>
-    </div>
-    <p>Автор: {{book?.author}}</p>
-    <p>Год выпуска: {{book?.releaseDate}}</p>
-    <p>Статус: {{book?.bookStatus | bookStatus}}</p>
-</li>
+ <li class="card mb-3 shadow-sm">
+   <div class="card-body">
+     <div class="d-flex justify-content-between align-items-start">
+       <h5 class="card-title">{{ book?.name }}</h5>
+       <button class="btn btn-outline-danger btn-sm" (click)="deleteBook?.(book?.id)">
+         <i class="bi bi-trash"></i> Удалить
+       </button>
+     </div>
+     <h6 class="card-subtitle text-muted mb-2">Автор: {{ book?.author }}</h6>
+     <p class="card-text mb-1"><strong>Год выпуска:</strong> {{ book?.releaseDate}}</p>
+     <p class="card-text"><strong>Статус:</strong> {{ book?.bookStatus | bookStatus }}</p>
+   </div>
+ </li>

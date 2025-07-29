@@ -1,19 +1,27 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import {HomeComponent} from "./components/home/home.component";
+import {BooksComponent} from "./components/books/books.component";
+import {RouterLink, RouterLinkActive, RouterModule, RouterOutlet} from "@angular/router";
+import {CommonModule, NgClass} from "@angular/common";
+import {User} from "./models";
+import {AccountService} from "./services";
 
 @Component({
-  selector: 'app-root',
+  selector: 'tsc-root',
+  standalone: true,
+  imports: [RouterLink, RouterOutlet, NgClass, RouterLinkActive, CommonModule],
   styleUrls: ['./app.component.css'],
   templateUrl: './app.component.html'
 })
 export class AppComponent {
-  constructor(private http: HttpClient) {
+  user?: User | null;
+
+  constructor(private accountService: AccountService) {
+    this.accountService.user.subscribe(user => this.user = user);
   }
 
-  login() {
-    this.http.post('/auth/login', { username: 'admin', password: 'admin' })
-      .subscribe((res) => {
-        console.log(res); // { token: 'fake-jwt-token' }
-      });
+  logout() {
+    this.accountService.logout();
   }
 }

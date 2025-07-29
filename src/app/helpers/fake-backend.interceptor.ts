@@ -1,10 +1,21 @@
 import { Injectable } from '@angular/core';
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpResponse } from '@angular/common/http';
+import {
+  HttpRequest,
+  HttpHandler,
+  HttpEvent,
+  HttpInterceptor,
+  HttpResponse,
+  HTTP_INTERCEPTORS
+} from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 import { User } from '../models/user';
 import { Book } from '../models';
-import { BookService } from './book.service';
+import { BookService } from '../services/book.service';
+
+// array in local storage for registered users
+const usersKey = 'angular-14-registration-login-example-users';
+let users: any[] = JSON.parse(localStorage.getItem(usersKey)!) || [];
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
@@ -14,16 +25,13 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    console.log('request')
 
     const books = this.books
 
     let lastId = books.length > 0 ? Math.max(...books.map(b => b.id)) : 0;
 
-    
-    
     const { url, method, headers, body } = request;
-    console.log('url', url)
+
     // Имитируем задержку API
     return of(null)
       .pipe(mergeMap(handleRoute))
@@ -33,7 +41,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function handleRoute() {
       switch (true) {
-        // Пример: GET /users
+        case url.endsWith('/authenticate') && method === 'POST':
+          return authenticate();
+
+        case url.endsWith('/register') && method === 'POST':
+          return register();
+
         case url.endsWith('/users') && method === 'GET':
           return getUsers();
 
@@ -48,15 +61,39 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         case url.endsWith('/books/delete') && method === 'DELETE':
           return deleteBook();
-        
+
         // Пример: POST /auth/login
         case url.endsWith('/auth/login') && method === 'POST':
           return authenticate();
-        
+
+
         // Если URL не совпадает ни с одним mock-эндпоинтом, пропускаем запрос дальше
         default:
           return next.handle(request);
       }
+    }
+
+    function authenticate() {
+      const { username, password } = body;
+      const user = users.find(x => x.username === username && x.password === password);
+      if (!user) return error('Username or password is incorrect');
+      return ok({
+        ...basicDetails(user),
+        token: 'fake-jwt-token'
+      })
+    }
+
+    function register() {
+      const user = body
+
+      if (users.find(x => x.username === user.username)) {
+        return error('Username "' + user.username + '" is already taken')
+      }
+
+      user.id = users.length ? Math.max(...users.map(x => x.id)) + 1 : 1;
+      users.push(user);
+      localStorage.setItem(usersKey, JSON.stringify(users));
+      return ok();
     }
 
     // Mock-функции
@@ -93,20 +130,11 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
       const index = books.findIndex(b => b.id === body.id);
       if (index === -1) return error('Книга не найдена');
-  
+
       books = books.filter(b => b.id !== body.id);
       console.log('books', books)
       saveBooksToStorage(books);
       return ok(books);
-    }
-
-    function authenticate() {
-      const { username, password } = body;
-      if (username === 'admin' && password === 'admin') {
-        return ok({ token: 'fake-jwt-token' });
-      } else {
-        return error('Неверный логин или пароль');
-      }
     }
 
     // Вспомогательные функции
@@ -153,3 +181,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     }
   }
 }
+
+export const fakeBackendProvider = {
+  provide: HTTP_INTERCEPTORS,
+  useClass: FakeBackendInterceptor,
+  multi: true
+}
+
