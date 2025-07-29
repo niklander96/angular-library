@@ -7,6 +7,7 @@ import {AccountService, BookService} from "../../../services";
 import {Book} from "../../../models";
 import {EBookStatuses} from "../../../enum/book-statuses.enum";
 import {first} from "rxjs/operators";
+import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
 /**
  * Интерфейс компонента формы создания и редактирования карточки книги.
  */
@@ -48,7 +49,14 @@ export class AddEditBookComponent implements OnInit, IAddEditBookComponent {
     private route: ActivatedRoute,
     private accountService: AccountService,
     private bookService: BookService
-  ) {}
+  ) {
+    this.bookForm = new FormGroup({
+      "name": new FormControl('', Validators.required),
+      "author": new FormControl('', Validators.required),
+      "releaseDate": new FormControl('', Validators.required),
+      "bookStatus": new FormControl('notInUse')
+    })
+  }
 
   /**
    * Возвращает к списку книг.
@@ -58,12 +66,23 @@ export class AddEditBookComponent implements OnInit, IAddEditBookComponent {
     void this.router.navigate(['books'])
   }
 
+  get formValue() { return this.bookForm.value; }
+
+
   /**
    * Отправляет данные на сервер.
    * @returns {void}
    */
   onSubmitBook(): void {
+    this.submitted = true;
+
     this.loading = true;
+
+    console.log('formValue', this.formValue)
+
+    if (this.bookForm.invalid) {
+      return;
+    }
 
     const ids = this.bookService.books
       .map(book => book.id)
@@ -73,19 +92,36 @@ export class AddEditBookComponent implements OnInit, IAddEditBookComponent {
 
     const formValue = this.bookForm.value
 
-    const objectToSend = new Book(newId, formValue.name, formValue.author, formValue.releaseDate, formValue.bookStatus)
+    // const objectToSend = new Book({newId,...this.bookForm.value})
 
-    this.bookService.addBook(objectToSend).subscribe({
+    this.saveBook().pipe(first()).subscribe({
       next: () => {
-        this.returnToBookList();
+        this.router.navigateByUrl('/books');
       },
       error: (err) => {
         console.error('Ошибка при добавлении книги:', err);
         this.loading = false;
+        // this.alertService.error(err);
+        this.submitting = false;
       }})
   }
 
+  private saveBook() {
+
+    const ids = this.bookService.books
+      .map(book => book.id)
+      .filter(id => typeof id === 'number' && !isNaN(id));
+
+    const newId = ids.length ? Math.max(...ids) + 1 : 1;
+    // create or update user based on id param
+    return this.id
+      ? this.bookService.updateBook(this.id!, this.bookForm.value)
+      : this.bookService.addBook({id: newId, ...this.bookForm.value});
+  }
+
   ngOnInit(): void {
+
+    console.log('this.bookForm', this.bookForm)
     this.id = this.route.snapshot.params['id'];
 
     this.bookStatuses = Object.values(EBookStatuses).map((status) => {
@@ -99,14 +135,15 @@ export class AddEditBookComponent implements OnInit, IAddEditBookComponent {
       "bookStatus": new FormControl('notInUse')
     })
 
-    this.title = 'Add User';
+    this.title = 'Add Book';
     if (this.id) {
       // edit mode
-      this.title = 'Edit User';
+      this.title = 'Edit Book';
       this.loading = true;
       this.bookService.getBookById(Number(this.id))
         .pipe(first())
         .subscribe(x => {
+          console.log('x', x)
           this.bookForm.patchValue(x);
           this.loading = false;
         });

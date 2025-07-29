@@ -53,8 +53,14 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         case url.endsWith('/books') && method === 'GET':
           return getBooks();
 
+        case url.match(/\/books\/\d+$/) && method === 'GET':
+          return getBookById();
+
         case url.endsWith('/books/create') && method === 'POST':
           return addBook();
+
+        // case url.match(/\/books\/\d+$/) && method === 'PUT':
+        //   return updateBook();
 
         case url.endsWith('/books/search') && method === 'POST':
           return searchBooks(';');
@@ -96,12 +102,22 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       return ok();
     }
 
+
     // Mock-функции
     function getUsers(): Observable<HttpResponse<User[]>> {
       return ok([
         { id: 1, name: 'John Doe' },
         { id: 2, name: 'Jane Smith' },
       ]);
+    }
+
+    function getBookById() {
+      // if (!isLoggedIn()) return unauthorized();
+
+      const books = getBooksFromStorage();
+
+      const book = books.find(x => x.id === idFromUrl());
+      return ok(book);
     }
 
     function getBooks(): Observable<HttpResponse<Book[]>> {

@@ -21,6 +21,7 @@ export class AccountService {
   }
 
   public get userValue() {
+    console.log('this.userSubject.value', this.userSubject.value)
     return this.userSubject.value;
   }
 

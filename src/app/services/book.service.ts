@@ -31,6 +31,7 @@ export class BookService implements IBookService {
    * @returns {Observable<Book>}
    */
   getBookById(id: number) {
+    console.log('this.http.get<Book>(`${environment.apiUrl}/books/${id}`)', this.http.get<Book>(`${environment.apiUrl}/books/${id}`))
     return this.http.get<Book>(`${environment.apiUrl}/books/${id}`).pipe(delay(3000));
   }
 
@@ -53,6 +54,11 @@ export class BookService implements IBookService {
    */
   addBook(newBook: Book): Observable<Book> {
     return (this.http.post(`${environment.apiUrl}/books/create`, newBook) as Observable<Book>).pipe(delay(3000))
+  }
+
+  updateBook(id: string, params: any): Observable<Book> {
+    console.log('Идентификатор', id )
+    return this.http.put(`${environment.apiUrl}/books/${id}`, params) as Observable<Book>
   }
 
   /**
