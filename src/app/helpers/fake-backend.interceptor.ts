@@ -115,7 +115,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     }
 
     function getBookById() {
-      // if (!isLoggedIn()) return unauthorized();
+      if (!isLoggedIn()) return unauthorized();
 
       const books = getBooksFromStorage();
 
@@ -125,6 +125,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     }
 
     function getBooks(): Observable<HttpResponse<Book[]>> {
+      if (!isLoggedIn()) return unauthorized();
+
       const books = getBooksFromStorage();
       return ok(books);
     }

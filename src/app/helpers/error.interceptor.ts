@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
+import {HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { AccountService } from '../services';
+import {FakeBackendInterceptor} from "./fake-backend.interceptor";
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -21,4 +22,10 @@ export class ErrorInterceptor implements HttpInterceptor {
       return throwError(() => error);
     }))
   }
+}
+
+export const errorProvider = {
+  provide: HTTP_INTERCEPTORS,
+  useClass: ErrorInterceptor,
+  multi: true
 }

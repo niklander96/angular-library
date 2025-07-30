@@ -7,12 +7,13 @@ export class ReadBooks {
    * @param name
    * @param startReadingDate
    * @param endReadingDate
+   * @param token
    */
   constructor(
     public bookId: number,
     public name: string,
     public startReadingDate: string,
-    public endReadingDate: string
+    public endReadingDate: string,
   ) {
 
   }

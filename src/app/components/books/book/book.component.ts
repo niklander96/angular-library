@@ -1,7 +1,9 @@
-import { Component, Input } from '@angular/core';
+import {Component, inject, Input, OnInit} from '@angular/core';
 import { Book } from 'src/app/models';
-import { BookStatusPipe } from "../../../pipes/book-status.pipe";
-import {Router, RouterLink} from "@angular/router";
+import { RouterLink } from "@angular/router";
+import {BookService} from "../../../services";
+import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
+import {BookStatusPipe} from "../../../pipes/book-status.pipe";
 
 /**
  * Интерфейс компонента книги.
@@ -10,6 +12,7 @@ import {Router, RouterLink} from "@angular/router";
  */
 interface IBookComponent {
   book?: Book;
+  deleting?: boolean
   deleteBook?: (bookId?: string) => void
 }
 
@@ -19,10 +22,9 @@ interface IBookComponent {
 @Component({
   selector: 'tsc-book',
   standalone: true,
-  imports: [BookStatusPipe, RouterLink],
+  imports: [RouterLink, BookStatusPipe],
   templateUrl: './book.component.html',
 })
-
 export class BookComponent implements IBookComponent{
   @Input() public book?: Book
 

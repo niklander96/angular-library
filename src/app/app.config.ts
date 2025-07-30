@@ -12,19 +12,20 @@ import {createEntityMethodsToken} from "./interfaces/entity-methods.interface";
 import {Book, User} from "./models";
 import {UserService} from "./services/user.service";
 import {EntityService} from "./services/entity.service";
-export const USER_METHODS_TOKEN = createEntityMethodsToken<User>('user');
-export const BOOK_METHODS_TOKEN = createEntityMethodsToken<Book>('book');
+import {errorProvider} from "./helpers/error.interceptor";
+import {jwtProvider} from "./helpers/jwt.interceptor";
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideClientHydration(),
-    {provide: USER_METHODS_TOKEN, useClass: UserService},
-    {provide: BOOK_METHODS_TOKEN, useClass: BookService},
-    fakeBackendProvider,
+
     provideHttpClient(
       withInterceptorsFromDi()
     ),
+    jwtProvider,
+    errorProvider,
+    fakeBackendProvider,
     importProvidersFrom(
       BrowserModule,
       FormsModule,

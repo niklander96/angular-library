@@ -1,10 +1,9 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import { Book } from 'src/app/models';
 import { BookService } from 'src/app/services/book.service';
 import { BookComponent } from "../book/book.component";
 import { CommonModule } from "@angular/common";
 import {RouterLink} from "@angular/router";
-import {BOOK_METHODS_TOKEN} from "../../../app.config";
 import {first} from "rxjs/operators";
 
 @Component({
@@ -15,13 +14,9 @@ import {first} from "rxjs/operators";
 })
 export class BooksComponent implements OnInit {
   loading = false;
-  books: Book[] = this.bookService.booksFromClass
+  books: Book[] = []
 
-  constructor(
-    @Inject(BOOK_METHODS_TOKEN) private bookService: BookService,
-  ) {
-    console.log(this.bookService.booksFromClass)
-  }
+  private bookService: BookService = inject(BookService)
 
   /**
    * Возвращает список книг.
@@ -44,12 +39,15 @@ export class BooksComponent implements OnInit {
 
   /**
    * Удаляет книгу.
+   * @param {string | undefined} bookId - Идентификатор книги.
    * @returns {void}
    */
   deleteBook = (bookId?: string): void  => {
     if (!bookId) return
-    const book = this.books!.find(book => book.id === bookId) || new Book()
+    const book = this.books!.find(book => book.id === bookId) ?? new Book()
+
     book.isDeleting = true
+
     this.bookService.delete(bookId).pipe(first()).subscribe({
       next: books => {
       this.books = books
@@ -65,5 +63,7 @@ export class BooksComponent implements OnInit {
 
   ngOnInit(): void {
     this.getBooks()
+
+    this.books = this.bookService.booksFromClass
   }
 }

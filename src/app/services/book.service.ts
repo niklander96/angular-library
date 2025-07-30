@@ -3,6 +3,8 @@ import {Book} from '../models';
 import { delay, map, Observable } from 'rxjs';
 import {EntityService} from "./entity.service";
 import {IEntityMethods} from "../interfaces/entity-methods.interface";
+import {EBookStatuses} from "../enum/book-statuses.enum";
+import {FormGroup} from "@angular/forms";
 
 /**
  * Сервис для работы с книгами.
@@ -74,5 +76,19 @@ export class BookService implements IEntityMethods<Book> {
    */
   delete(bookId: string): Observable<Book[]> {
     return this.entityService.delete(bookId).pipe(delay(3000))
+  }
+
+  /**
+   * Возвращает статус книги в переводе.
+   * @private
+   * @param {EBookStatuses} status - Статус книги.
+   * @returns {string} - Статус книги в переводе.
+   */
+  getTranslatedBookStatus(status?: EBookStatuses): string {
+    switch(status) {
+      case EBookStatuses.IN_USE: return 'Взята читателем'
+      case EBookStatuses.NOT_IN_USE: return 'Доступна'
+      default: return 'Доступна'
+    }
   }
 }

@@ -11,7 +11,7 @@ import { User } from '../models';
   providedIn: 'root'
 })
 export class AccountService {
-  private readonly userSubject: BehaviorSubject<User | null>;
+  private userSubject: BehaviorSubject<User | null>;
   public user: Observable<User | null>;
 
   constructor(

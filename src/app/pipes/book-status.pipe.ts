@@ -10,8 +10,6 @@ export class BookStatusPipe implements PipeTransform {
     switch(value) {
       case EBookStatuses.IN_USE: return 'Взята читателем'
       case EBookStatuses.NOT_IN_USE: return 'Доступна'
-      case EBookStatuses.DAMAGED: return 'Повреждена'
-      case EBookStatuses.LOST: return 'Утеряна'
       default: return 'Доступна'
     }
   }

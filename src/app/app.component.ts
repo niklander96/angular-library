@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import {HomeComponent} from "./components/home/home.component";
-import {BooksComponent} from "./components/books-page/books/books.component";
+import {BooksComponent} from "./components/books/books/books.component";
 import {RouterLink, RouterLinkActive, RouterModule, RouterOutlet} from "@angular/router";
 import {CommonModule, NgClass} from "@angular/common";
 import {User} from "./models";
