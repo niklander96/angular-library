@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { AccountService } from "../../../services";
 import { first } from "rxjs/operators";
 import { CommonModule } from "@angular/common";
+import {UserService} from "../../../services/user.service";
 
 @Component({
   selector: 'tsc-register',
@@ -11,17 +12,15 @@ import { CommonModule } from "@angular/common";
   imports: [ReactiveFormsModule, CommonModule, RouterLink],
   templateUrl: './register.component.html',
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit{
   registerForm!: FormGroup;
-  loading = false;
-  submitted = false;
+  public loading: boolean = false;
+  public submitted: boolean = false;
+  private route: ActivatedRoute = inject(ActivatedRoute)
+  private router: Router = inject(Router)
+  private userService: UserService = inject(UserService)
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private accountService: AccountService,
-    // private alertService: AlertService
-  ) {
+  ngOnInit() {
     this.registerForm = new FormGroup({
       "firstName": new FormControl('', Validators.required),
       "lastName": new FormControl('', Validators.required),
@@ -30,30 +29,24 @@ export class RegisterComponent {
     })
   }
 
-  // convenience getter for easy access to form fields
   get formValue() { return this.registerForm.value; }
 
   onSubmit() {
     this.submitted = true;
 
-    // // reset alerts on submit
-    // this.alertService.clear();
-
-    // stop here if form is invalid
     if (this.registerForm.invalid) {
       return;
     }
 
     this.loading = true;
-    this.accountService.register(this.registerForm.value)
+    this.userService.add(this.registerForm.value)
       .pipe(first())
       .subscribe({
         next: () => {
-          // this.alertService.success('Registration successful', { keepAfterRouteChange: true });
           this.router.navigate(['../login'], { relativeTo: this.route });
         },
-        error: error => {
-          // this.alertService.error(error);
+        error: (error: any) => {
+          console.error(error)
           this.loading = false;
         }
       });

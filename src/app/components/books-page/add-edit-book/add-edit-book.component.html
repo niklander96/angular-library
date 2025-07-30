@@ -1,4 +1,4 @@
-<h1>{{title}}</h1>
+<h1 class="text-center m-2">{{title}}</h1>
 @if (loading) {
   <div class="text-center m-5">
     <span class="spinner-border spinner-border-lg align-center"></span>
@@ -31,7 +31,7 @@
   </div>
 
   <div class="d-flex justify-content-between">
-    <button type="button" class="btn btn-outline-secondary" (click)="returnToBookList()">Назад к списку</button>
+    <button type="button" class="btn btn-outline-secondary" routerLink="/books">Назад к списку</button>
     <button [disabled]="loading" type="submit" class="btn btn-success">
       @if (submitting) {
         <span class="spinner-border spinner-border-sm me-1"></span>

@@ -1,13 +1,20 @@
-<div class="d-flex justify-content-between align-items-center m-4">
-  <h2 class="h4 mb-0">📚 Список книг</h2>
-  <button class="btn btn-primary" routerLink="/books/create">
-    <i class="bi bi-plus-circle"></i> Добавить новую книгу
-  </button>
-</div>
-<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 m-4">
-  <div class="col">
-    @for (book of books; track $index) {
-      <tsc-book [book]="book" [deleteBook]="deleteBook"></tsc-book>
-    }
+@if (loading) {
+  <div class="text-center m-5">
+    <span class="spinner-border spinner-border-lg align-center"></span>
   </div>
-</div>
+} @else {
+  <div class="d-flex justify-content-between align-items-center m-4">
+    <h2 class="h4 mb-0">📚 Список книг</h2>
+    <button class="btn btn-primary" routerLink="/books/add">
+      <i class="bi bi-plus-circle"></i> Добавить новую книгу
+    </button>
+  </div>
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 m-4">
+    <div class="col">
+      @for (book of books; track $index) {
+        <tsc-book [book]="book" [deleting]="book?.isDeleting" [deleteBook]="deleteBook"></tsc-book>
+      }
+    </div>
+  </div>
+}
+

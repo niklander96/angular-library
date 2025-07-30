@@ -12,6 +12,7 @@ import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 import { User } from '../models/user';
 import { Book } from '../models';
 import { BookService } from '../services/book.service';
+import {__classPrivateFieldGet} from "tslib";
 
 // array in local storage for registered users
 const usersKey = 'angular-14-registration-login-example-users';
@@ -25,10 +26,11 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
+    console.log('request', request)
 
     const books = this.books
 
-    let lastId = books.length > 0 ? Math.max(...books.map(b => b.id)) : 0;
+    let lastId = books.length > 0 ? Math.max(...books.map(b => Number(b.id))) : 0;
 
     const { url, method, headers, body } = request;
 
@@ -44,7 +46,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         case url.endsWith('/authenticate') && method === 'POST':
           return authenticate();
 
-        case url.endsWith('/register') && method === 'POST':
+        case url.endsWith('/users/add') && method === 'POST':
           return register();
 
         case url.endsWith('/users') && method === 'GET':
@@ -56,7 +58,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         case url.match(/\/books\/\d+$/) && method === 'GET':
           return getBookById();
 
-        case url.endsWith('/books/create') && method === 'POST':
+        case url.endsWith('/books/add') && method === 'POST':
+          console.log('adding book');
           return addBook();
 
         // case url.match(/\/books\/\d+$/) && method === 'PUT':
@@ -65,7 +68,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         case url.endsWith('/books/search') && method === 'POST':
           return searchBooks(';');
 
-        case url.endsWith('/books/delete') && method === 'DELETE':
+        case url.match(/\/books\/\d+$/) && method === 'DELETE':
           return deleteBook();
 
         // Пример: POST /auth/login
@@ -116,7 +119,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
       const books = getBooksFromStorage();
 
-      const book = books.find(x => x.id === idFromUrl());
+      const book = books.find(x => x.id === idFromUrl().toString());
+      console.log('book', book);
       return ok(book);
     }
 
@@ -144,12 +148,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     function deleteBook(): Observable<HttpResponse<Book[]>> {
       let books = getBooksFromStorage();
 
-      const index = books.findIndex(b => b.id === body.id);
-      if (index === -1) return error('Книга не найдена');
+      books = books.filter(b => b.id !== idFromUrl().toString());
 
-      books = books.filter(b => b.id !== body.id);
-      console.log('books', books)
       saveBooksToStorage(books);
+
       return ok(books);
     }
 

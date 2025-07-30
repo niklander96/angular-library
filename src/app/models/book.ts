@@ -4,17 +4,20 @@ import { EBookStatuses } from "../enum/book-statuses.enum";
 export class Book {
   /**
    * Конструктор класса книги.
-   * @param {number} id - Уникальный идентификатор.
-   * @param {string} name - Название книги. 
-   * @param {string} author - Автор.
-   * @param {string} releaseDate - Дата выпуска.
-   * @param {BookStatuses} bookStatus - Статус книги.
+   * @property {string} id - Уникальный идентификатор.
+   * @property {string} name - Название книги.
+   * @property {string} author - Автор.
+   * @property {string} releaseDate - Дата выпуска.
+   * @property {BookStatuses} bookStatus - Статус книги.
+   * @property {boolean | undefined} isDeleting - Удаляется ли книга?ы
+   *
    */
   constructor(
-    public id: number,
-    public name: string, 
-    public author: string,
-    public releaseDate: string,
-    public bookStatus: EBookStatuses
+    public id?: string,
+    public name?: string,
+    public author?: string,
+    public releaseDate?: string,
+    public bookStatus?: EBookStatuses,
+    public isDeleting?: boolean
 ) {}
 }

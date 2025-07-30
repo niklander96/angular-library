@@ -1,18 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {Book, User} from '../models';
+import {Book} from '../models';
 import { delay, map, Observable } from 'rxjs';
-import {environment} from "../../enviroments/enviroment";
-
-/**
- * Интерфейс сервера для работы с книгами.
- */
-interface IBookService {
-  books: Book[]
-  getBooks() :Observable<Book[]>
-  addBook(newBook: Book): Observable<Book>
-  deleteBook(bookId: number): Observable<unknown>
-}
+import {EntityService} from "./entity.service";
+import {IEntityMethods} from "../interfaces/entity-methods.interface";
 
 /**
  * Сервис для работы с книгами.
@@ -20,31 +10,41 @@ interface IBookService {
 @Injectable({
   providedIn: 'root'
 })
-export class BookService implements IBookService {
-  books: Book[] = []
+export class BookService implements IEntityMethods<Book> {
+  private books: Book[] = []
 
-  constructor(private http: HttpClient) { }
+  constructor(private entityService: EntityService<Book>) {
+    this.entityService.entityNameFromService = 'books';
+  }
+
+  get booksFromClass(): Book[] {
+    return this.books;
+  }
+
+  set booksFromClass(books: Book[]) {
+    this.books = books;
+  }
 
   /**
    * Возвращает книгу по id.
    * @param {number} id - Уникальный идентификатор.
    * @returns {Observable<Book>}
    */
-  getBookById(id: number) {
-    console.log('this.http.get<Book>(`${environment.apiUrl}/books/${id}`)', this.http.get<Book>(`${environment.apiUrl}/books/${id}`))
-    return this.http.get<Book>(`${environment.apiUrl}/books/${id}`).pipe(delay(3000));
+  getById(id: string): Observable<Book> {
+    return this.entityService.getById(id).pipe(delay(3000));
   }
 
   /**
-   * Возвращает книги.
+   * Возвращает все книги.
    * @returns {Observable<Book[]>}
    */
-  getBooks(): Observable<Book[]> {
-    return this.http.get(`${environment.apiUrl}/books`).pipe(map((books) => {
+  getAll(): Observable<Book[]> {
+    return this.entityService.getAll()
+      .pipe(map((books) => {
         return (books as Book[]).map((book) => {
           return new Book(book.id, book.name, book.author, book.releaseDate, book.bookStatus)
         })
-    }), delay(3000));
+      }), delay(3000));
   }
 
   /**
@@ -52,21 +52,27 @@ export class BookService implements IBookService {
    * @param {Book} newBook - Объект новой книги.
    * @returns {Observable<Book>}
    */
-  addBook(newBook: Book): Observable<Book> {
-    return (this.http.post(`${environment.apiUrl}/books/create`, newBook) as Observable<Book>).pipe(delay(3000))
+  add(newBook: Book): Observable<Book> {
+    console.log('newBook', newBook);
+    return this.entityService.add(newBook).pipe(delay(3000))
   }
 
-  updateBook(id: string, params: any): Observable<Book> {
-    console.log('Идентификатор', id )
-    return this.http.put(`${environment.apiUrl}/books/${id}`, params) as Observable<Book>
+  /**
+   * Обновляет книгу.
+   * @param {string} id - Уникальный идентификатор.
+   * @param {any} params - Параметры.
+   * @returns {Observable<Book>}
+   */
+  update(id: string, params: any): Observable<Book> {
+    return this.entityService.update(id, params).pipe(delay(3000))
   }
 
   /**
    * Удаляет книгу.
-   * @param {number | null} bookId - Уникальный идентификатор книги.
+   * @param {string} bookId - Уникальный идентификатор книги.
    * @returns {Observable<Book[]>}
    */
-  deleteBook(bookId: number | null): Observable<Book[]> {
-    return (this.http.delete(`${environment.apiUrl}/books/delete`, { body: { id: bookId }}) as Observable<Book[]>).pipe(delay(3000))
+  delete(bookId: string): Observable<Book[]> {
+    return this.entityService.delete(bookId).pipe(delay(3000))
   }
 }
