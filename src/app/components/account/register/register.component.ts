@@ -46,7 +46,9 @@ export class RegisterComponent implements OnInit{
           this.router.navigate(['../login'], { relativeTo: this.route });
         },
         error: (error: any) => {
-          console.error(error)
+          console.error('Ошибка при регистрации', error)
+        },
+        complete: () => {
           this.loading = false;
         }
       });

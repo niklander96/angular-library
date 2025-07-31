@@ -71,8 +71,11 @@ export class AddEditBookComponent implements OnInit, IAddEditBookComponent {
       },
       error: (err) => {
         console.error('Ошибка при добавлении книги:', err);
+      },
+      complete: () => {
         this.submitting = false;
-      }})
+      }
+    })
   }
 
   /**
@@ -88,7 +91,7 @@ export class AddEditBookComponent implements OnInit, IAddEditBookComponent {
     const newId = ids.length ? Math.max(...ids) + 1 : 1;
 
     return this.id
-      ? this.bookService.update(this.id!, this.bookForm.value)
+      ? this.bookService.update(this.id!, {...this.bookForm.value})
       : this.bookService.add({id: newId.toString(), ...this.bookForm.value});
   }
 
@@ -124,6 +127,8 @@ export class AddEditBookComponent implements OnInit, IAddEditBookComponent {
         .subscribe({
           next: book => {
             this.bookForm.patchValue(book);
+          },
+          complete: () => {
             this.loading = false;
           }
         });

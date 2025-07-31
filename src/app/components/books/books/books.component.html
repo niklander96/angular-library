@@ -11,7 +11,7 @@
   </div>
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 m-4">
     <div class="col">
-      @for (book of books; track $index) {
+      @for (book of books; track book.id) {
         <tsc-book [book]="book" [deleting]="book?.isDeleting" [deleteBook]="deleteBook"></tsc-book>
       }
     </div>

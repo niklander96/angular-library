@@ -4,7 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { AccountService } from '../services';
-import {FakeBackendInterceptor} from "./fake-backend.interceptor";
+import {FakeBackendInterceptor} from "./fake-backend/fake-backend.interceptor";
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {

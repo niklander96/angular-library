@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
 import { Book } from 'src/app/models';
 import { BookService } from 'src/app/services/book.service';
 import { BookComponent } from "../book/book.component";
@@ -28,13 +28,24 @@ export class BooksComponent implements OnInit {
       next: books => {
         this.books = books
         this.bookService.booksFromClass = books
-        this.loading = false
       },
       error: err => {
         console.error(err)
-        this.loading = false
+      },
+      complete: () => {
+        this.loading = false;
       }
   })
+  }
+
+  /**
+   * Устанавливает значение в объект книги: Удаляется ли книга?
+   * @param {boolean} isDeleting - Удаляется ли книга?
+   * @param {string} bookId - Идентификатор книги.
+   * @returns {void}
+   */
+  setIsBookDeleting(isDeleting: boolean, bookId: string): void {
+    this.books = this.books.map(book => book.id === bookId ? {...book, isDeleting } : book);
   }
 
   /**
@@ -44,19 +55,19 @@ export class BooksComponent implements OnInit {
    */
   deleteBook = (bookId?: string): void  => {
     if (!bookId) return
-    const book = this.books!.find(book => book.id === bookId) ?? new Book()
 
-    book.isDeleting = true
+    this.setIsBookDeleting(true, bookId)
 
     this.bookService.delete(bookId).pipe(first()).subscribe({
       next: books => {
-      this.books = books
-      this.bookService.booksFromClass = books
-        book.isDeleting = false
+        this.books = books
+        this.bookService.booksFromClass = books
       },
       error: err => {
-        console.error('Не удалось удалить', err)
-        book.isDeleting = false
+        console.error('Не удалось удалить книгу', err)
+      },
+      complete: () => {
+        this.setIsBookDeleting(false, bookId)
       }
   })
   }

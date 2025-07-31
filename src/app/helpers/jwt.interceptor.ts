@@ -10,8 +10,6 @@ export class JwtInterceptor implements HttpInterceptor {
   private accountService: AccountService = inject(AccountService)
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // add auth header with jwt if user is logged in and request is to the api url
-    console.log(this.accountService.getUserSubject.value)
     const user = this.accountService.getUserSubject.value;
     const isLoggedIn = user && user.token;
     const isApiUrl = request.url.startsWith(environment.apiUrl);

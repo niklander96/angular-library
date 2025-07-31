@@ -1,4 +1,4 @@
-import {Component, inject, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, Input, OnInit} from '@angular/core';
 import { Book } from 'src/app/models';
 import { RouterLink } from "@angular/router";
 import {BookService} from "../../../services";
@@ -24,6 +24,7 @@ interface IBookComponent {
   standalone: true,
   imports: [RouterLink, BookStatusPipe],
   templateUrl: './book.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BookComponent implements IBookComponent{
   @Input() public book?: Book

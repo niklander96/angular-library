@@ -46,6 +46,9 @@ export class LoginComponent implements OnInit {
           this.router.navigateByUrl(returnUrl);
         },
         error: error => {
+          console.error('Ошибка при авторизации', error);
+        },
+        complete: () => {
           this.loading = false;
         }
       });

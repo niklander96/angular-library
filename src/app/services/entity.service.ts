@@ -10,8 +10,7 @@ import {environment} from "../../enviroments/enviroment";
 export class EntityService<EntityType> implements IEntityMethods<EntityType> {
   private entityName: string = ''
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   set entityNameFromService(newEntityName: string) {
     this.entityName = newEntityName;
@@ -34,7 +33,6 @@ export class EntityService<EntityType> implements IEntityMethods<EntityType> {
   }
 
   delete(id: string): Observable<EntityType[]> {
-    console.log('id', id)
     return this.http.delete<EntityType[]>(`${environment.apiUrl}/${this.entityName}/${id}`)
   }
 }

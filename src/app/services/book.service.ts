@@ -41,12 +41,7 @@ export class BookService implements IEntityMethods<Book> {
    * @returns {Observable<Book[]>}
    */
   getAll(): Observable<Book[]> {
-    return this.entityService.getAll()
-      .pipe(map((books) => {
-        return (books as Book[]).map((book) => {
-          return new Book(book.id, book.name, book.author, book.releaseDate, book.bookStatus)
-        })
-      }), delay(3000));
+    return this.entityService.getAll().pipe(delay(3000));
   }
 
   /**
@@ -55,7 +50,6 @@ export class BookService implements IEntityMethods<Book> {
    * @returns {Observable<Book>}
    */
   add(newBook: Book): Observable<Book> {
-    console.log('newBook', newBook);
     return this.entityService.add(newBook).pipe(delay(3000))
   }
 
@@ -76,19 +70,5 @@ export class BookService implements IEntityMethods<Book> {
    */
   delete(bookId: string): Observable<Book[]> {
     return this.entityService.delete(bookId).pipe(delay(3000))
-  }
-
-  /**
-   * Возвращает статус книги в переводе.
-   * @private
-   * @param {EBookStatuses} status - Статус книги.
-   * @returns {string} - Статус книги в переводе.
-   */
-  getTranslatedBookStatus(status?: EBookStatuses): string {
-    switch(status) {
-      case EBookStatuses.IN_USE: return 'Взята читателем'
-      case EBookStatuses.NOT_IN_USE: return 'Доступна'
-      default: return 'Доступна'
-    }
   }
 }

@@ -1,5 +1,8 @@
 import { EBookStatuses } from "../enum/book-statuses.enum";
 import { Book } from "../models";
+import {InjectionToken} from "@angular/core";
+import {HTTP_INTERCEPTORS} from "@angular/common/http";
+import {FakeBackendInterceptor} from "../helpers/fake-backend/fake-backend.interceptor";
 
 export const books: Book[] =  [
     {
@@ -73,3 +76,10 @@ export const books: Book[] =  [
       bookStatus: EBookStatuses.IN_USE
     }
   ]
+
+export const BOOKS_MOCK = new InjectionToken<Book[]>('books');
+
+export const booksMock = {
+  provide: BOOKS_MOCK,
+  useValue: books,
+}
