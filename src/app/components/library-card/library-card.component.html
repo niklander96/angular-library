@@ -1,1 +1,61 @@
-<h1 class="text-center m-2">Читательский билет: {{user?.firstName}} {{user?.lastName}}</h1>
+<div class="reader-card container mt-4 mb-4 p-4 shadow rounded-3">
+  <h1 class="text-center mb-4 display-5 fw-bold text-primary">Читательский билет</h1>
+
+  <div class="reader-info card mb-4 p-3 border-0 bg-light">
+    <div class="card-body">
+      <h2 class="h4 card-title mb-3 text-secondary">Личная информация</h2>
+      <div class="d-flex align-items-center mb-2">
+        <span class="badge bg-primary me-2"><i class="bi bi-person-fill"></i></span>
+        <span class="fs-5">{{user?.lastName}} {{user?.firstName}}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="books-section row g-4">
+    <div class="col-md-6">
+      <div class="card h-100 border-primary">
+        <div class="card-header bg-primary text-white">
+          <h2 class="h5 mb-0"><i class="bi bi-book-half me-2"></i>Книги в пользовании</h2>
+        </div>
+        <div class="card-body">
+          @for (readBook of user?.currentBooks; track readBook.bookId) {
+            <div class="book-item mb-3 p-3 border-bottom">
+              <h3 class="h6 fw-bold">{{readBook.name}}</h3>
+              <div class="book-dates text-muted small">
+                <div><i class="bi bi-calendar-check me-1"></i> Взято: {{readBook.startReadingDate | date:'dd.MM.yyyy'}}</div>
+                <div><i class="bi bi-calendar-x me-1"></i> Вернуть до: {{readBook.endReadingDate | date:'dd.MM.yyyy'}}</div>
+              </div>
+            </div>
+          }
+          @empty {
+            <div class="text-center text-muted py-3">Нет книг в пользовании</div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card h-100 border-success">
+        <div class="card-header bg-success text-white">
+          <h2 class="h5 mb-0"><i class="bi bi-bookmark-check me-2"></i>Прочитанные книги</h2>
+        </div>
+        <div class="card-body">
+          @for (readBook of user?.readBooks; track readBook.bookId) {
+            <div class="book-item mb-3 p-3 border-bottom">
+              <h3 class="h6 fw-bold">{{readBook.name}}</h3>
+              <div class="book-dates text-muted small">
+                <div><i class="bi bi-calendar-range me-1"></i> Период чтения:
+                  {{readBook.startReadingDate | date:'dd.MM.yyyy'}} -
+                  {{readBook.endReadingDate | date:'dd.MM.yyyy'}}
+                </div>
+              </div>
+            </div>
+          }
+          @empty {
+            <div class="text-center text-muted py-3">Нет прочитанных книг</div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

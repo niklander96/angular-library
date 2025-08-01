@@ -25,9 +25,6 @@ export class RouteHandler {
       case url.endsWith('/users/add') && method === 'POST':
         return this.userMethodsService.register(request.body);
 
-      case url.endsWith('/users') && method === 'GET':
-        return this.userMethodsService.getUsers();
-
       case url.endsWith('/books') && method === 'GET':
         return this.bookMethodsService.getBooks(request);
 

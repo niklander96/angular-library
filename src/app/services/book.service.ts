@@ -9,9 +9,7 @@ import {FormGroup} from "@angular/forms";
 /**
  * Сервис для работы с книгами.
  */
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class BookService implements IEntityMethods<Book> {
   private books: Book[] = []
 

@@ -1,20 +1,18 @@
-import {ChangeDetectionStrategy, Component, inject, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import { Book } from 'src/app/models';
-import { RouterLink } from "@angular/router";
-import {BookService} from "../../../services";
-import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
 import {BookStatusPipe} from "../../../pipes/book-status.pipe";
+import {DatePipe} from "@angular/common";
 
 /**
  * Интерфейс компонента книги.
- * @prop {Book | undefined} book - Объект книги.
- * @prop {((bookId: number | undefined) => void) | undefined} deleteBook - Удаляет книгу.
  */
 interface IBookComponent {
+  deleteBook: EventEmitter<string | undefined>
+  delete(bookId?: string): void
   book?: Book;
   deleting?: boolean
-  deleteBook?: (bookId?: string) => void
 }
+
 
 /**
  * Компонент книги.
@@ -22,14 +20,18 @@ interface IBookComponent {
 @Component({
   selector: 'tsc-book',
   standalone: true,
-  imports: [RouterLink, BookStatusPipe],
+  imports: [BookStatusPipe, DatePipe],
   templateUrl: './book.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BookComponent implements IBookComponent{
+export class BookComponent implements IBookComponent {
   @Input() public book?: Book
 
   @Input() public deleting?: boolean = false;
 
-  @Input() public deleteBook?: (bookId?: string) => void
+  @Output() public deleteBook: EventEmitter<string | undefined>  = new EventEmitter<string | undefined>()
+  public delete(bookId?: string): void {
+    this.deleteBook.emit(bookId);
+  }
+
 }

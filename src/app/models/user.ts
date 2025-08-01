@@ -7,13 +7,12 @@ export class ReadBooks {
    * @param name
    * @param startReadingDate
    * @param endReadingDate
-   * @param token
    */
   constructor(
     public bookId: number,
     public name: string,
-    public startReadingDate: string,
-    public endReadingDate: string,
+    public startReadingDate: Date,
+    public endReadingDate?: Date,
   ) {
 
   }
@@ -27,5 +26,6 @@ export class User {
   firstName?: string;
   lastName?: string;
   token?: string;
+  currentBooks?: ReadBooks[]
   readBooks?: ReadBooks[]
 }

@@ -21,14 +21,14 @@
       <input id="releaseDate" name="releaseDate" type="date" formControlName="releaseDate" class="form-control" [ngClass]="{ 'is-invalid': submitted && formValue.releaseDate.errors }">
     </div>
 
-    <div class="mb-4">
-      <label for="bookStatus" class="form-label">Статус книги</label>
-      <select id="bookStatus" name="bookStatus" formControlName="bookStatus" class="form-select" [ngClass]="{ 'is-invalid': submitted && formValue.bookStatus.errors }">
-        <option [value]="status" *ngFor="let status of bookStatuses">
-          {{ status | bookStatus }}
-        </option>
-      </select>
-    </div>
+<!--    <div class="mb-4">-->
+<!--      <label for="bookStatus" class="form-label">Статус книги</label>-->
+<!--      <select id="bookStatus" name="bookStatus" formControlName="bookStatus" class="form-select" [ngClass]="{ 'is-invalid': submitted && formValue.bookStatus.errors }">-->
+<!--        <option [value]="status" *ngFor="let status of bookStatuses">-->
+<!--          {{ status | bookStatus }}-->
+<!--        </option>-->
+<!--      </select>-->
+<!--    </div>-->
 
     <div class="d-flex justify-content-between">
       <button type="button" class="btn btn-outline-secondary" routerLink="/books">Назад к списку</button>

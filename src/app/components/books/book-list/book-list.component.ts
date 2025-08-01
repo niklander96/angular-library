@@ -1,22 +1,24 @@
-import {ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, inject, OnDestroy, OnInit} from '@angular/core';
 import { Book } from 'src/app/models';
 import { BookService } from 'src/app/services/book.service';
 import { BookComponent } from "../book/book.component";
 import { CommonModule } from "@angular/common";
 import {RouterLink} from "@angular/router";
-import {first} from "rxjs/operators";
+import {first, takeUntil} from "rxjs/operators";
+import {Subject} from "rxjs";
 
 @Component({
-  selector: 'tsc-books',
+  selector: 'tsc-book-list',
   standalone: true,
   imports: [BookComponent, CommonModule, RouterLink],
-  templateUrl: './books.component.html',
+  templateUrl: './book-list.component.html',
 })
-export class BooksComponent implements OnInit {
-  loading = false;
-  books: Book[] = []
+export class BookListComponent implements OnInit, OnDestroy {
+  public loading: boolean = false;
+  public books: Book[] = []
 
   private bookService: BookService = inject(BookService)
+  private destroy$: Subject<void> = new Subject<void>();
 
   /**
    * Возвращает список книг.
@@ -25,11 +27,11 @@ export class BooksComponent implements OnInit {
   getBooks(): void {
     this.loading = true;
     this.bookService.getAll().pipe().subscribe({
-      next: books => {
+      next: (books) => {
         this.books = books
         this.bookService.booksFromClass = books
       },
-      error: err => {
+      error: (err) => {
         console.error(err)
       },
       complete: () => {
@@ -58,7 +60,7 @@ export class BooksComponent implements OnInit {
 
     this.setIsBookDeleting(true, bookId)
 
-    this.bookService.delete(bookId).pipe(first()).subscribe({
+    this.bookService.delete(bookId).pipe(first(), takeUntil(this.destroy$)).subscribe({
       next: books => {
         this.books = books
         this.bookService.booksFromClass = books
@@ -76,5 +78,10 @@ export class BooksComponent implements OnInit {
     this.getBooks()
 
     this.books = this.bookService.booksFromClass
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next()
+    this.destroy$.complete()
   }
 }

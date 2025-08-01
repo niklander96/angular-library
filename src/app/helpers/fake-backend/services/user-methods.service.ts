@@ -1,8 +1,8 @@
 import {inject, Injectable} from '@angular/core';
-import {HttpResponse} from "@angular/common/http";
+import {HttpRequest, HttpResponse} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {StorageService} from "./storage.service";
-import {User} from "../../../models";
+import {Book, User} from "../../../models";
 import {ResponseHelper} from "../helpers/response.helper";
 
 @Injectable({
@@ -11,11 +11,8 @@ import {ResponseHelper} from "../helpers/response.helper";
 export class UserMethodsService {
   private storageService: StorageService<User> = inject(StorageService<User>)
 
-  constructor() {
-    this.storageService.entityKey = 'angular-14-registration-login-example-users';
-  }
-
-  register(user: any): Observable<HttpResponse<any>> {
+  public register(user: any): Observable<HttpResponse<any>> {
+    this.storageService.entityKey = 'users';
     const users = this.storageService.getItems();
 
     if (users.find(x => x.username === user.username)) {
@@ -27,12 +24,5 @@ export class UserMethodsService {
     this.storageService.saveItems(users);
 
     return ResponseHelper.ok();
-  }
-
-  getUsers(): Observable<HttpResponse<User[]>> {
-    return ResponseHelper.ok([
-      { id: 1, name: 'John Doe' },
-      { id: 2, name: 'Jane Smith' },
-    ]);
   }
 }

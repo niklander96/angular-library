@@ -5,12 +5,27 @@ import {Observable} from "rxjs";
 import {HttpResponse} from "@angular/common/http";
 import {ResponseHelper} from "../helpers/response.helper";
 
+interface IBasicDetails {
+  id: string
+  username: string
+  firstName: string
+  lastName: string
+}
+
+interface IAuthService {
+  authenticate(body: any): Observable<HttpResponse<any>>
+}
+
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService implements IAuthService {
 
   private storageService: StorageService<User> = inject(StorageService<User>);
+
+  constructor() {
+    this.storageService.entityKey = 'users';
+  }
 
   authenticate(body: any): Observable<HttpResponse<any>> {
     const { username, password } = body;

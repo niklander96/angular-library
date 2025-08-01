@@ -8,10 +8,19 @@ import { AuthHelper } from '../helpers/auth.helper';
 import { UrlHelper } from '../helpers/url.helper';
 import {BOOKS_MOCK} from "../../../mock/books";
 
+interface IBookMethodsService {
+  getBooks(request: HttpRequest<any>): Observable<HttpResponse<Book[]>>
+  getBookById(request: HttpRequest<any>): Observable<HttpResponse<Book>>
+  addBook(request: HttpRequest<any>): Observable<HttpResponse<Book>>
+  updateBook(request: HttpRequest<any>): Observable<HttpResponse<Book[]>>
+  searchBooks(request: HttpRequest<any>): Observable<HttpResponse<Book[]>>
+  deleteBook(request: HttpRequest<any>): Observable<HttpResponse<Book[]>>
+}
+
 @Injectable({
   providedIn: 'root'
 })
-export class BookMethodsService {
+export class BookMethodsService implements IBookMethodsService {
   private storageService: StorageService<Book> = inject(StorageService<Book>)
   private books: Book[] = inject(BOOKS_MOCK)
 
@@ -19,7 +28,8 @@ export class BookMethodsService {
     this.storageService.entityKey = 'library-books';
   }
 
-  getBooks(request: HttpRequest<any>): Observable<HttpResponse<Book[]>> {
+  public getBooks(request: HttpRequest<any>): Observable<HttpResponse<Book[]>> {
+    this.storageService.entityKey = 'library-books';
     if (!AuthHelper.isLoggedIn(request)) {
       return ResponseHelper.unauthorized();
     }
@@ -33,7 +43,7 @@ export class BookMethodsService {
     return ResponseHelper.ok(gettedBooks);
   }
 
-  getBookById(request: HttpRequest<any>): Observable<HttpResponse<Book | undefined>> {
+  public getBookById(request: HttpRequest<any>): Observable<HttpResponse<Book>> {
     if (!AuthHelper.isLoggedIn(request)) {
       return ResponseHelper.unauthorized();
     }
@@ -45,7 +55,7 @@ export class BookMethodsService {
     return ResponseHelper.ok(book);
   }
 
-  addBook(request: HttpRequest<any>): Observable<HttpResponse<Book>> {
+  public addBook(request: HttpRequest<any>): Observable<HttpResponse<Book>> {
     if (!AuthHelper.isLoggedIn(request)) {
       return ResponseHelper.unauthorized();
     }
@@ -58,7 +68,7 @@ export class BookMethodsService {
     return ResponseHelper.ok(newBook);
   }
 
-  updateBook(request: HttpRequest<any>): Observable<HttpResponse<Book[]>> {
+  public updateBook(request: HttpRequest<any>): Observable<HttpResponse<Book[]>> {
     if (!AuthHelper.isLoggedIn(request)) {
       return ResponseHelper.unauthorized();
     }
@@ -77,7 +87,7 @@ export class BookMethodsService {
     return ResponseHelper.ok(updatedBooks);
   }
 
-  searchBooks(request: HttpRequest<any>): Observable<HttpResponse<Book[]>> {
+  public searchBooks(request: HttpRequest<any>): Observable<HttpResponse<Book[]>> {
     const books = this.storageService.getItems();
     const searchValue = request.body.searchValue || '';
 
@@ -86,7 +96,7 @@ export class BookMethodsService {
     }));
   }
 
-  deleteBook(request: HttpRequest<any>): Observable<HttpResponse<Book[]>> {
+  public deleteBook(request: HttpRequest<any>): Observable<HttpResponse<Book[]>> {
     if (!AuthHelper.isLoggedIn(request)) {
       return ResponseHelper.unauthorized();
     }

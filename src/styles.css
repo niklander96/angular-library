@@ -2,9 +2,3 @@
   min-height: 320px;
   overflow: hidden;
 }
-
-.btn-delete-user {
-  width: 40px;
-  text-align: center;
-  box-sizing: content-box;
-}

@@ -1,7 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { AccountService } from "../../../services";
 import { first } from "rxjs/operators";
 import { CommonModule } from "@angular/common";
 import {UserService} from "../../../services/user.service";

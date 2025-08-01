@@ -1,5 +1,5 @@
 
-import { Injectable } from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {User} from "../models";
 import {delay, map, Observable} from "rxjs";
 import {AccountService} from "./account.service";
@@ -13,10 +13,10 @@ import {IEntityMethods} from "../interfaces/entity-methods.interface";
   providedIn: 'root'
 })
 export class UserService implements IEntityMethods<User> {
-  constructor(
-    private entityService: EntityService<User>,
-    private accountService: AccountService,
-  ) {
+  private entityService: EntityService<User> = inject(EntityService<User>)
+  private accountService: AccountService = inject(AccountService)
+
+  constructor() {
     this.entityService.entityNameFromService = 'users';
   }
 
