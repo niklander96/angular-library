@@ -12,7 +12,7 @@ import {UserService} from "../../../services/user.service";
   templateUrl: './register.component.html',
 })
 export class RegisterComponent implements OnInit{
-  registerForm!: FormGroup;
+  public registerForm!: FormGroup;
   public loading: boolean = false;
   public submitted: boolean = false;
   private route: ActivatedRoute = inject(ActivatedRoute)
