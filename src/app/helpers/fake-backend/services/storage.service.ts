@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 
 interface IStorage<EntityType> {
+  getItem(): EntityType | null
+  saveItem(item: EntityType): void
   getItems(): EntityType[]
   saveItems(items: EntityType[]): void
 }
@@ -13,6 +15,25 @@ export class StorageService<EntityType> implements IStorage<EntityType> {
 
   set entityKey(key: string) {
     this.key = key;
+  }
+
+  /**
+   * Возвращает элемент из localStorage.
+   * @returns {EntityType}
+   */
+  public getItem(): EntityType | null {
+    const stored = localStorage.getItem(this.key) ?? '';
+
+    return JSON.parse(stored);
+  }
+
+  /**
+   * Сохраняет элементы в localStorage.
+   * @param {EntityType} item - Элементы.
+   * @returns {void}
+   */
+  public saveItem(item: EntityType): void {
+    localStorage.setItem(this.key, JSON.stringify(item));
   }
 
   /**
@@ -32,5 +53,4 @@ export class StorageService<EntityType> implements IStorage<EntityType> {
   public saveItems(items: EntityType[]): void {
     localStorage.setItem(this.key, JSON.stringify(items));
   }
-
 }

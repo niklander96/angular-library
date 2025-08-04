@@ -52,15 +52,15 @@ export class UserService implements IEntityMethods<User> {
    * @param {any} params - Параметры.
    * @returns {Observable<User>}
    */
-  public update(id: string, params: any): Observable<User> {
+  public update(id: string, params: any): Observable<User[]> {
     return this.entityService.update(id, params)
       .pipe(map(x => {
-        if (id == this.accountService.getUserSubject.value?.id) {
-          const user = { ...this.accountService.getUserSubject.value, ...params };
+        if (id == this.accountService.userSubjectFromService.value?.id) {
+          const user = { ...this.accountService.userSubjectFromService.value, ...params };
 
           localStorage.setItem('user', JSON.stringify(user));
 
-          this.accountService.getUserSubject.next(user);
+          this.accountService.userSubjectFromService.next(user);
         }
         return x;
       }))
@@ -74,8 +74,7 @@ export class UserService implements IEntityMethods<User> {
   public delete(id: string): Observable<User[]> {
     return this.entityService.delete(id)
       .pipe(map(x => {
-        // auto logout if the logged-in user deleted their own record
-        if (id == this.accountService.getUserSubject.value?.id) {
+        if (id == this.accountService.userSubjectFromService.value?.id) {
           this.accountService.logout();
         }
         return x;

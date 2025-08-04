@@ -28,8 +28,8 @@ export class EntityService<EntityType> implements IEntityMethods<EntityType> {
     return this.http.post<EntityType>(`${environment.apiUrl}/${this.entityName}/add`, entity);
   }
 
-  public update(id: string, params: any): Observable<EntityType> {
-    return this.http.put<EntityType>(`${environment.apiUrl}/${this.entityName}/${id}`, params)
+  public update(id: string, params: any): Observable<EntityType[]> {
+    return this.http.put<EntityType[]>(`${environment.apiUrl}/${this.entityName}/${id}`, params)
   }
 
   public delete(id: string): Observable<EntityType[]> {

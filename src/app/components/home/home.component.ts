@@ -13,6 +13,6 @@ export class HomeComponent {
   public user: User | null;
 
   constructor(private accountService: AccountService) {
-    this.user = this.accountService.getUserSubject.value;
+    this.user = this.accountService.userSubjectFromService.value;
   }
 }

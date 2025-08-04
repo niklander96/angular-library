@@ -2,6 +2,7 @@ import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@
 import { Book } from 'src/app/models';
 import {BookStatusPipe} from "../../../pipes/book-status.pipe";
 import {DatePipe} from "@angular/common";
+import {EBookStatuses} from "../../../enum/book-statuses.enum";
 
 /**
  * Интерфейс компонента книги.
@@ -9,6 +10,7 @@ import {DatePipe} from "@angular/common";
 interface IBookComponent {
   deleteBook: EventEmitter<string | undefined>
   delete(bookId?: string): void
+  changeStatus(book?: Book): void
   book?: Book;
   deleting?: boolean
 }
@@ -27,11 +29,15 @@ interface IBookComponent {
 export class BookComponent implements IBookComponent {
   @Input() public book?: Book
 
-  @Input() public deleting?: boolean = false;
-
   @Output() public deleteBook: EventEmitter<string | undefined>  = new EventEmitter<string | undefined>()
   public delete(bookId?: string): void {
     this.deleteBook.emit(bookId);
   }
 
+  @Output() public changeBookStatus: EventEmitter<Book | undefined>  = new EventEmitter<Book | undefined>()
+  public changeStatus(book?: Book): void {
+    this.changeBookStatus.emit(book);
+  }
+
+  protected readonly EBookStatuses = EBookStatuses;
 }

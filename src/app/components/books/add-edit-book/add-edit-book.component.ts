@@ -83,7 +83,7 @@ export class AddEditBookComponent implements OnInit, IAddEditBookComponent {
    * @private
    * @returns {Observable<Book>}
    */
-  private saveBook(): Observable<Book> {
+  private saveBook(): Observable<Book | Book[]> {
     const ids = this.bookService.booksFromClass
       .map(book => Number(book.id))
       .filter(id => !isNaN(id));
@@ -95,9 +95,9 @@ export class AddEditBookComponent implements OnInit, IAddEditBookComponent {
       : this.bookService.add({id: newId.toString(), ...this.bookForm.value});
   }
 
-  /** Отрабатывает при иницализации. */
+  /** Отрабатывает при инициализации. */
   ngOnInit(): void {
-    /** Идентификатор книги, полученный из парметров адресной строки. */
+    /** Идентификатор книги, полученный из параметров адресной строки. */
     this.id = this.route.snapshot.params['id']
 
     /** Статусы книги. */

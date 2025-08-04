@@ -1,6 +1,6 @@
 
 /** Класс прочитанных книг. */
-export class ReadBooks {
+export class ReadBook {
   /**
    *
    * @param bookId
@@ -9,8 +9,8 @@ export class ReadBooks {
    * @param endReadingDate
    */
   constructor(
-    public bookId: number,
-    public name: string,
+    public bookId: string = '',
+    public name: string = '',
     public startReadingDate: Date,
     public endReadingDate?: Date,
   ) {
@@ -26,6 +26,6 @@ export class User {
   firstName?: string;
   lastName?: string;
   token?: string;
-  currentBooks?: ReadBooks[]
-  readBooks?: ReadBooks[]
+  currentBooks?: ReadBook[]
+  readBooks?: ReadBook[]
 }

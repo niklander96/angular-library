@@ -28,8 +28,11 @@ export class BookMethodsService implements IBookMethodsService {
     this.storageService.entityKey = 'library-books';
   }
 
+  /**
+   *
+   * @param request
+   */
   public getBooks(request: HttpRequest<any>): Observable<HttpResponse<Book[]>> {
-    this.storageService.entityKey = 'library-books';
     if (!AuthHelper.isLoggedIn(request)) {
       return ResponseHelper.unauthorized();
     }
@@ -43,6 +46,10 @@ export class BookMethodsService implements IBookMethodsService {
     return ResponseHelper.ok(gettedBooks);
   }
 
+  /**
+   *
+   * @param request
+   */
   public getBookById(request: HttpRequest<any>): Observable<HttpResponse<Book>> {
     if (!AuthHelper.isLoggedIn(request)) {
       return ResponseHelper.unauthorized();
@@ -55,38 +62,52 @@ export class BookMethodsService implements IBookMethodsService {
     return ResponseHelper.ok(book);
   }
 
+  /**
+   *
+   * @param request
+   */
   public addBook(request: HttpRequest<any>): Observable<HttpResponse<Book>> {
     if (!AuthHelper.isLoggedIn(request)) {
       return ResponseHelper.unauthorized();
     }
 
     const books = this.storageService.getItems();
+
     const newBook = { ...request.body };
+
     books.push(newBook);
+
     this.storageService.saveItems(books);
 
     return ResponseHelper.ok(newBook);
   }
 
+  /**
+   *
+   * @param request
+   */
   public updateBook(request: HttpRequest<any>): Observable<HttpResponse<Book[]>> {
     if (!AuthHelper.isLoggedIn(request)) {
       return ResponseHelper.unauthorized();
     }
 
     const books = this.storageService.getItems();
-    const bookId = UrlHelper.idFromUrl(request.url);
-    const book = books.find(book => book.id === bookId.toString()) || new Book();
 
-    book.bookStatus = request.body.bookStatus
     const updatedBooks = books.map(item => {
-      if (item.id !== book?.id) return item;
-      return { ...book };
+      if (item.id !== request.body?.id) return item;
+
+      return { ...request.body };
     });
+
     this.storageService.saveItems(updatedBooks);
 
     return ResponseHelper.ok(updatedBooks);
   }
 
+  /**
+   *
+   * @param request
+   */
   public searchBooks(request: HttpRequest<any>): Observable<HttpResponse<Book[]>> {
     const books = this.storageService.getItems();
     const searchValue = request.body.searchValue || '';
@@ -96,6 +117,10 @@ export class BookMethodsService implements IBookMethodsService {
     }));
   }
 
+  /**
+   *
+   * @param request
+   */
   public deleteBook(request: HttpRequest<any>): Observable<HttpResponse<Book[]>> {
     if (!AuthHelper.isLoggedIn(request)) {
       return ResponseHelper.unauthorized();

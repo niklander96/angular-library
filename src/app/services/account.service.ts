@@ -6,40 +6,66 @@ import { map } from 'rxjs/operators';
 
 import { environment } from '../../enviroments/enviroment';
 import { User } from '../models';
+import {StorageService} from "../helpers/fake-backend/services/storage.service";
+
+interface IAccountService {
+  user: Observable<User | null>;
+  userSubjectFromService: BehaviorSubject<User | null>
+  login(username: string, password: string): Observable<User | null>;
+  logout(): void;
+  updateUser(user: User): void
+}
 
 @Injectable({
   providedIn: 'root'
 })
-export class AccountService {
+export class AccountService implements IAccountService {
   private userSubject: BehaviorSubject<User | null>;
   public user: Observable<User | null>;
 
   constructor(
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private storageService: StorageService<User>
   ) {
-    this.userSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('user')!));
+    this.storageService.entityKey = 'user';
+    this.userSubject = new BehaviorSubject(this.storageService.getItem());
     this.user = this.userSubject.asObservable();
   }
 
-  public get getUserSubject() {
+  public get userSubjectFromService() {
     return this.userSubject;
   }
 
+  /**
+   *
+   * @param username
+   * @param password
+   */
   public login(username: string, password: string) {
     return this.http.post<User>(`${environment.apiUrl}/users/authenticate`, { username, password })
       .pipe(map(user => {
-        // store user details and jwt token in local storage to keep user logged in between page refreshes
         localStorage.setItem('user', JSON.stringify(user));
         this.userSubject.next(user);
         return user;
       }));
   }
 
+  /**
+   *
+   */
   public logout() {
-    // remove user from local storage and set current user to null
     localStorage.removeItem('user');
     this.userSubject.next(null);
     this.router.navigate(['/account/login']);
+  }
+
+  /**
+   *
+   * @param user
+   */
+  public updateUser(user: User) {
+    localStorage.setItem('user', JSON.stringify(user));
+    this.userSubject.next(user);
   }
 }

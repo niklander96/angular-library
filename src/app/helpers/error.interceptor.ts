@@ -4,7 +4,6 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { AccountService } from '../services';
-import {FakeBackendInterceptor} from "./fake-backend/fake-backend.interceptor";
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -12,8 +11,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(catchError(err => {
-      if ([401, 403].includes(err.status) && this.accountService.getUserSubject.value) {
-        // auto logout if 401 or 403 response returned from api
+      if ([401, 403].includes(err.status) && this.accountService.userSubjectFromService.value) {
         this.accountService.logout();
       }
 

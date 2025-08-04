@@ -15,7 +15,7 @@
         <div class="col">
           <tsc-book
             [book]="book"
-            [deleting]="book?.isDeleting"
+            (changeBookStatus)="changeBookStatus($event)"
             (deleteBook)="deleteBook($event)"
             class="h-100"
           ></tsc-book>

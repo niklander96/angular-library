@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import {Book} from '../models';
-import { delay, map, Observable } from 'rxjs';
+import { delay, Observable } from 'rxjs';
 import {EntityService} from "./entity.service";
 import {IEntityMethods} from "../interfaces/entity-methods.interface";
-import {EBookStatuses} from "../enum/book-statuses.enum";
-import {FormGroup} from "@angular/forms";
 
 /**
  * Сервис для работы с книгами.
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+  })
 export class BookService implements IEntityMethods<Book> {
   private books: Book[] = []
 
@@ -57,7 +57,7 @@ export class BookService implements IEntityMethods<Book> {
    * @param {any} params - Параметры.
    * @returns {Observable<Book>}
    */
-  public update(id: string, params: any): Observable<Book> {
+  public update(id: string, params: any): Observable<Book[]> {
     return this.entityService.update(id, params).pipe(delay(3000))
   }
 

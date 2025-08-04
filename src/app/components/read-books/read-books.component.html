@@ -1,1 +1,21 @@
-<p>read-books works!</p>
+
+  <div class="card h-100 border-success">
+    <div class="card-header bg-success text-white">
+      <h2 class="h5 mb-0"><i class="bi bi-bookmark-check me-2"></i>Прочитанные книги</h2>
+    </div>
+    <div class="card-body">
+      @for (readBook of readBooks; track readBook.bookId) {
+        <div class="book-item mb-3 p-3 border-bottom">
+          <h3 class="h6 fw-bold">{{readBook.name}}</h3>
+          <div class="book-dates text-muted small">
+            <div><i class="bi bi-calendar-check me-1"></i> Взято: {{readBook.startReadingDate | date:'dd.MM.yyyy HH:mm'}}</div>
+            <div><i class="bi bi-calendar-check me-1"></i> Возвращено: {{readBook.endReadingDate | date:'dd.MM.yyyy HH:mm'}}</div>
+          </div>
+        </div>
+      }
+      @empty {
+        <div class="text-center text-muted py-3">Нет прочитанных книг</div>
+      }
+    </div>
+  </div>
+

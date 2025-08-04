@@ -3,15 +3,34 @@
      <div class="d-flex justify-content-between align-items-start">
        <h5 class="card-title">{{ book?.name }}</h5>
        <div class="d-flex gap-2">
+         <button
+           (click)="changeStatus(book)"
+           class="btn btn-sm btn-primary d-flex align-items-center justify-content-center gap-2"
+           [disabled]="book?.isStatusChanging"
+         >
+           @if (book?.isStatusChanging) {
+             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+           } @else {
+             @if (book?.bookStatus === EBookStatuses.NOT_IN_USE) {
+               <i class="bi bi-box-arrow-in-right"></i>
+               <span>Взять</span>
+             } @else {
+               <i class="bi bi-box-arrow-left"></i>
+               <span>Вернуть</span>
+             }
+           }
+         </button>
          <button (click)="delete(book?.id)"
-                 class="btn btn-sm btn-danger flex-grow-1"
-                 [disabled]="deleting">
-           @if (deleting) {
+                 class="btn btn-sm btn-danger d-flex align-items-center justify-content-center gap-2"
+                 [disabled]="book?.isDeleting">
+           @if (book?.isDeleting) {
              <span class="spinner-border spinner-border-sm"></span>
            } @else {
+             <i class="bi bi-trash"></i>
              <span>Удалить</span>
            }
          </button>
+
        </div>
      </div>
      <h6 class="card-subtitle text-muted mb-2">Автор: {{ book?.author }}</h6>

@@ -15,7 +15,7 @@ export class LayoutComponent {
     private router: Router,
     private accountService: AccountService
   ) {
-    if (this.accountService.getUserSubject.value) {
+    if (this.accountService.userSubjectFromService.value) {
       this.router.navigate(['/']);
     }
   }

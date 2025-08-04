@@ -1,9 +1,13 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {DatePipe} from "@angular/common";
+import {ReadBook} from "../../models/user";
 
 @Component({
-  selector: 'tsc-read-book-list',
+  selector: 'tsc-read-books',
   standalone: true,
-  imports: [],
+  imports: [DatePipe],
   templateUrl: './read-books.component.html',
 })
-export class ReadBooksComponent {}
+export class ReadBooksComponent {
+  @Input() public readBooks?: ReadBook[];
+}

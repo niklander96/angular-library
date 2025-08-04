@@ -10,7 +10,7 @@ export const books: Book[] =  [
       name: "Властелин Колец",
       author: "Дж. Р. Р. Толкин",
       releaseDate: new Date("29.07.1954"),
-      bookStatus: EBookStatuses.IN_USE
+      bookStatus: EBookStatuses.NOT_IN_USE
     },
     {
       id: '2',
@@ -24,14 +24,14 @@ export const books: Book[] =  [
       name: "Преступление и наказание",
       author: "Ф. М. Достоевский",
       releaseDate: new Date("01.01.1866"),
-      bookStatus: EBookStatuses.IN_USE
+      bookStatus: EBookStatuses.NOT_IN_USE
     },
     {
       id: '4',
       name: "1984",
       author: "Джордж Оруэлл",
       releaseDate: new Date("08.06.1949"),
-      bookStatus: EBookStatuses.IN_USE
+      bookStatus: EBookStatuses.NOT_IN_USE
     },
     {
       id: '5',
@@ -45,7 +45,7 @@ export const books: Book[] =  [
       name: "Три товарища",
       author: "Эрих Мария Ремарк",
       releaseDate: new Date("01.01.1936"),
-      bookStatus: EBookStatuses.IN_USE
+      bookStatus: EBookStatuses.NOT_IN_USE
     },
     {
       id: '7',
@@ -59,7 +59,7 @@ export const books: Book[] =  [
       name: "Убить пересмешника",
       author: "Харпер Ли",
       releaseDate: new Date("11.07.1960"),
-      bookStatus: EBookStatuses.IN_USE
+      bookStatus: EBookStatuses.NOT_IN_USE
     },
     {
       id: '9',
@@ -73,7 +73,7 @@ export const books: Book[] =  [
       name: "Тень горы",
       author: "Грегори Дэвид Робертс",
       releaseDate: new Date("01.01.2015"),
-      bookStatus: EBookStatuses.IN_USE
+      bookStatus: EBookStatuses.NOT_IN_USE
     }
   ]
 
