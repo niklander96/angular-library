@@ -7,12 +7,12 @@ import {AccountService} from "./services";
 @Component({
   selector: 'tsc-root',
   standalone: true,
-  imports: [RouterLink, RouterOutlet, NgClass, RouterLinkActive, CommonModule],
+  imports: [RouterLink, RouterOutlet, RouterLinkActive, CommonModule],
   styleUrls: ['./app.component.css'],
   templateUrl: './app.component.html'
 })
 export class AppComponent {
-  user?: User | null;
+  public user?: User | null;
 
   constructor(private accountService: AccountService) {
     this.accountService.user.subscribe(user => this.user = user);

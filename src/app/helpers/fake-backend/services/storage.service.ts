@@ -19,7 +19,7 @@ export class StorageService<EntityType> implements IStorage<EntityType> {
    * Возвращает элементы из localStorage.
    * @returns {EntityType[]}
    */
-  getItems(): EntityType[] {
+  public getItems(): EntityType[] {
     const stored = localStorage.getItem(this.key);
     return stored ? JSON.parse(stored) : [];
   }
@@ -29,7 +29,7 @@ export class StorageService<EntityType> implements IStorage<EntityType> {
    * @param {EntityType[]} items - Элементы.
    * @returns {void}
    */
-  saveItems(items: EntityType[]): void {
+  public saveItems(items: EntityType[]): void {
     localStorage.setItem(this.key, JSON.stringify(items));
   }
 

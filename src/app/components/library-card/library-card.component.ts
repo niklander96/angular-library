@@ -12,7 +12,7 @@ import {DatePipe} from "@angular/common";
   templateUrl: './library-card.component.html',
 })
 export class LibraryCardComponent {
-  user: User | null;
+  public user: User | null;
 
   constructor(private accountService: AccountService) {
     this.user = this.accountService.getUserSubject.value;

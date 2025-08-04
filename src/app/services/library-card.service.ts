@@ -9,11 +9,11 @@ export class LibraryCardService {
 
   constructor(private accountService: AccountService) { }
 
-  takeBook(book: Book) {
+  public takeBook(book: Book) {
 
   }
 
-  returnBook(id: number) {
+  public returnBook(id: number) {
 
   }
 }

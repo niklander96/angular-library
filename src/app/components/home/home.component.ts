@@ -10,7 +10,7 @@ import {User} from "../../models";
   templateUrl: './home.component.html',
 })
 export class HomeComponent {
-  user: User | null;
+  public user: User | null;
 
   constructor(private accountService: AccountService) {
     this.user = this.accountService.getUserSubject.value;

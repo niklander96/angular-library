@@ -30,7 +30,7 @@ export class BookService implements IEntityMethods<Book> {
    * @param {number} id - Уникальный идентификатор.
    * @returns {Observable<Book>}
    */
-  getById(id: string): Observable<Book> {
+  public getById(id: string): Observable<Book> {
     return this.entityService.getById(id).pipe(delay(3000));
   }
 
@@ -38,7 +38,7 @@ export class BookService implements IEntityMethods<Book> {
    * Возвращает все книги.
    * @returns {Observable<Book[]>}
    */
-  getAll(): Observable<Book[]> {
+  public getAll(): Observable<Book[]> {
     return this.entityService.getAll().pipe(delay(3000));
   }
 
@@ -47,7 +47,7 @@ export class BookService implements IEntityMethods<Book> {
    * @param {Book} newBook - Объект новой книги.
    * @returns {Observable<Book>}
    */
-  add(newBook: Book): Observable<Book> {
+  public add(newBook: Book): Observable<Book> {
     return this.entityService.add(newBook).pipe(delay(3000))
   }
 
@@ -57,7 +57,7 @@ export class BookService implements IEntityMethods<Book> {
    * @param {any} params - Параметры.
    * @returns {Observable<Book>}
    */
-  update(id: string, params: any): Observable<Book> {
+  public update(id: string, params: any): Observable<Book> {
     return this.entityService.update(id, params).pipe(delay(3000))
   }
 
@@ -66,7 +66,7 @@ export class BookService implements IEntityMethods<Book> {
    * @param {string} bookId - Уникальный идентификатор книги.
    * @returns {Observable<Book[]>}
    */
-  delete(bookId: string): Observable<Book[]> {
+  public delete(bookId: string): Observable<Book[]> {
     return this.entityService.delete(bookId).pipe(delay(3000))
   }
 }

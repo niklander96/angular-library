@@ -13,7 +13,7 @@ export class RouteHandler {
   private userMethodsService: UserMethodsService = inject(UserMethodsService);
   private bookMethodsService: BookMethodsService = inject(BookMethodsService);
 
-  handleRoute(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  public handleRoute(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const { url, method } = request;
 
     switch (true) {

@@ -24,7 +24,7 @@ export class UserService implements IEntityMethods<User> {
    * Возвращает всех пользователей.
    * @returns {Observable<User[]>}
    */
-  getAll(): Observable<User[]> {
+  public getAll(): Observable<User[]> {
     return this.entityService.getAll().pipe(delay(3000))
   }
 
@@ -33,7 +33,7 @@ export class UserService implements IEntityMethods<User> {
    * @param {number} id - Уникальный идентификатор.
    * @returns {Observable<User>}
    */
-  getById(id: string): Observable<User> {
+  public getById(id: string): Observable<User> {
     return this.entityService.getById(id)
   }
 
@@ -42,7 +42,7 @@ export class UserService implements IEntityMethods<User> {
    * @param {User} user - Объект нового пользователя.
    * @returns {Observable<User>}
    */
-  add(user: User): Observable<User> {
+  public add(user: User): Observable<User> {
     return this.entityService.add(user)
   }
 
@@ -52,7 +52,7 @@ export class UserService implements IEntityMethods<User> {
    * @param {any} params - Параметры.
    * @returns {Observable<User>}
    */
-  update(id: string, params: any): Observable<User> {
+  public update(id: string, params: any): Observable<User> {
     return this.entityService.update(id, params)
       .pipe(map(x => {
         if (id == this.accountService.getUserSubject.value?.id) {
@@ -71,7 +71,7 @@ export class UserService implements IEntityMethods<User> {
    * @param {string} id - Уникальный идентификатор книги.
    * @returns {Observable<User[]>}
    */
-  delete(id: string): Observable<User[]> {
+  public delete(id: string): Observable<User[]> {
     return this.entityService.delete(id)
       .pipe(map(x => {
         // auto logout if the logged-in user deleted their own record

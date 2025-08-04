@@ -16,23 +16,23 @@ export class EntityService<EntityType> implements IEntityMethods<EntityType> {
     this.entityName = newEntityName;
   }
 
-  getAll(): Observable<EntityType[]> {
+  public getAll(): Observable<EntityType[]> {
     return this.http.get<EntityType[]>(`${environment.apiUrl}/${this.entityName}`);
   }
 
-  getById(id: string): Observable<EntityType> {
+  public getById(id: string): Observable<EntityType> {
     return this.http.get<EntityType>(`${environment.apiUrl}/${this.entityName}/${id}`);
   }
 
-  add(entity: EntityType): Observable<EntityType> {
+  public add(entity: EntityType): Observable<EntityType> {
     return this.http.post<EntityType>(`${environment.apiUrl}/${this.entityName}/add`, entity);
   }
 
-  update(id: string, params: any): Observable<EntityType> {
+  public update(id: string, params: any): Observable<EntityType> {
     return this.http.put<EntityType>(`${environment.apiUrl}/${this.entityName}/${id}`, params)
   }
 
-  delete(id: string): Observable<EntityType[]> {
+  public delete(id: string): Observable<EntityType[]> {
     return this.http.delete<EntityType[]>(`${environment.apiUrl}/${this.entityName}/${id}`)
   }
 }

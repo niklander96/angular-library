@@ -27,7 +27,7 @@ export class AuthService implements IAuthService {
     this.storageService.entityKey = 'users';
   }
 
-  authenticate(body: any): Observable<HttpResponse<any>> {
+  public authenticate(body: any): Observable<HttpResponse<any>> {
     const { username, password } = body;
     const users = this.storageService.getItems();
     const user = users.find(user => user.username === username && user.password === password);

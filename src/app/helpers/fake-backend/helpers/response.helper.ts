@@ -3,15 +3,15 @@ import { HttpResponse } from '@angular/common/http';
 import { delay, materialize, dematerialize } from 'rxjs/operators';
 
 export class ResponseHelper {
-  static ok(body?: any): Observable<HttpResponse<any>> {
+  public static ok(body?: any): Observable<HttpResponse<any>> {
     return of(new HttpResponse({status: 200, body}));
   }
 
-  static error(message: string): Observable<never> {
+  public static error(message: string): Observable<never> {
     return throwError(() => ({error: {message}}));
   }
 
-  static unauthorized(): Observable<never> {
+  public static unauthorized(): Observable<never> {
     return throwError(() => ({status: 401, error: {message: 'Unauthorized'}}))
       .pipe(materialize(), delay(500), dematerialize());
   }

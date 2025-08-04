@@ -14,7 +14,7 @@ import {RouteHandler} from "./helpers/route-handler.helper";
 export class FakeBackendInterceptor implements HttpInterceptor {
   private routeHandler: RouteHandler = inject(RouteHandler);
 
-  intercept(
+  public intercept(
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
